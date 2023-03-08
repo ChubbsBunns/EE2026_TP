@@ -17,6 +17,7 @@ module Top_Student (
     output J_MIC3_Pin1,   
     input  J_MIC3_Pin3,   
     output J_MIC3_Pin4,    
+    output [3:0] JA, // 
     output reg [8:0]led,
     output reg [3:0] an = 4'b1111,
     output reg [7:0] seg = 8'b11111111
@@ -34,12 +35,32 @@ module Top_Student (
     reg [11:0] curr_mic_val = 0;
     reg [11:0] peak_val = 0;
     reg [8:0] state_val = 0;
+    
+    //audio output task code
+    reg [11:0] audio_out = 12'b000000000000;
+    reg clkCustom = 0;
+    reg [25:0] clkCustomMax  = 26'b0;
+    reg [25:0] clkCustomCount  = 0;
+    reg [11:0] customVol = 12'b111111111111; //12'b
   
     
     clk20k dut1(basys_clk, clk20khz);
     clk100MHz dut2(basys_clk, clk100Mhz);
     clk10Hz dut3(basys_clk, clk10hz);
     Audio_Input audioInput(basys_clk, clk20khz, J_MIC3_Pin3, J_MIC3_Pin1, J_MIC3_Pin4, mic_out); 
+    Audio_Output audio_output (
+                .CLK(clk50M), // -- System Clock (50MHz)  
+                .START(clk20k), // -- Sampling clock 20kHz
+                .DATA1(audio_out[11:0]), //   12-bit digital data1
+                .DATA2(audio_out[11:0]), // 12 bit digital data 2
+                .RST(0), // input reset
+                .D1(JA[1]), // -- PmodDA2 Pin2 (Serial data1)
+                .D2(JA[2]), // -- PmodDA2 Pin3 (Serial data2)
+                .CLK_OUT(JA[3]), //  -- PmodDA2 Pin4 (Serial Clock)
+                .nSYNC(JA[0]), //  -- PmodDA2 Pin1 (Chip Select)
+                .DONE(0)
+            );
+        
      
 //    always @ (posedge basys_clk) begin
 //        my_chosen_clock <= (sw[1] == 1) ? clk10hz : clk20khz;
@@ -58,6 +79,21 @@ module Top_Student (
 
     always @ (posedge clk20khz)
     begin
+    
+        //audio out code
+        clkCustomCount <= clkCustomCount + 1;
+         if(clkCustomCount >= clkCustomMax)begin
+                           clkCustom <= ~clkCustom;
+                           clkCustomCount <= 0;
+                           
+       //                        if(beepstate == 1) begin
+       //                            audio_out[11:0] <= audio_out[11:0] ^ customVol;
+                               
+       //                        end
+                         
+         end
+         
+         
         count_AVI <= count_AVI + 1;
         curr_mic_val <= mic_out;
         if (curr_mic_val > peak_val)
@@ -90,6 +126,8 @@ module Top_Student (
     end
     
    always @ (posedge clk100Mhz)begin
+   
+   
    an <= 4'b1111;
    seg <= 8'b11111111;
    case(state_val)
