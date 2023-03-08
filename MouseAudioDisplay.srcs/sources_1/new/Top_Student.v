@@ -13,14 +13,20 @@
 
 module Top_Student (
     input basys_clk,
-    input [11:0] sw,
+    input [15:0] sw,
     output J_MIC3_Pin1,   
     input  J_MIC3_Pin3,   
     output J_MIC3_Pin4,    
     output [3:0] JA, // 
     output reg [8:0]led,
     output reg [3:0] an = 4'b1111,
-    output reg [7:0] seg = 8'b11111111
+    output reg [7:0] seg = 8'b11111111,
+    
+    input btnC,
+    input btnU,
+    input btnL,
+    input btnR,
+    input btnD
     );
     
     wire clk20khz;
@@ -37,11 +43,16 @@ module Top_Student (
     reg [8:0] state_val = 0;
     
     //audio output task code
+    reg [25:0] clk50Mcount = 0; //
+    reg clk50M = 0;  //
+    reg [25:0] clk20kcount = 0; // 
+    reg clk20k = 0;   
     reg [11:0] audio_out = 12'b000000000000;
     reg clkCustom = 0;
     reg [25:0] clkCustomMax  = 26'b0;
     reg [25:0] clkCustomCount  = 0;
     reg [11:0] customVol = 12'b111111111111; //12'b
+    reg beepState = 1;
   
     
     clk20k dut1(basys_clk, clk20khz);
@@ -50,7 +61,7 @@ module Top_Student (
     Audio_Input audioInput(basys_clk, clk20khz, J_MIC3_Pin3, J_MIC3_Pin1, J_MIC3_Pin4, mic_out); 
     Audio_Output audio_output (
                 .CLK(clk50M), // -- System Clock (50MHz)  
-                .START(clk20k), // -- Sampling clock 20kHz
+                .START(clk20khz), // -- Sampling clock 20kHz
                 .DATA1(audio_out[11:0]), //   12-bit digital data1
                 .DATA2(audio_out[11:0]), // 12 bit digital data 2
                 .RST(0), // input reset
@@ -80,19 +91,8 @@ module Top_Student (
     always @ (posedge clk20khz)
     begin
     
-        //audio out code
-        clkCustomCount <= clkCustomCount + 1;
-         if(clkCustomCount >= clkCustomMax)begin
-                           clkCustom <= ~clkCustom;
-                           clkCustomCount <= 0;
-                           
-       //                        if(beepstate == 1) begin
-       //                            audio_out[11:0] <= audio_out[11:0] ^ customVol;
-                               
-       //                        end
-                         
-         end
-         
+        
+    
          
         count_AVI <= count_AVI + 1;
         curr_mic_val <= mic_out;
@@ -127,6 +127,41 @@ module Top_Student (
     
    always @ (posedge clk100Mhz)begin
    
+   
+           //audio out code
+            
+           clk50Mcount <= clk50Mcount + 1;
+           clk20kcount <= clk20kcount + 1; 
+           if (clk50Mcount >= 1) begin 
+                                      
+                clk50M <= ~clk50M;
+                clk50Mcount <=  0;
+           end 
+                           
+           if (clk20kcount >= 2500) begin 
+                clk20k <= ~clk20k;
+                clk20kcount <=  0;
+           end 
+           if(sw[0]) begin
+               clkCustomMax <= 263158; // 190hz 
+           end 
+           else if (sw[0] == 0) begin
+               clkCustomMax <= 131579; // 380hz
+           end
+           
+           customVol <= 12'b111111111111; // adjust volume
+           
+           clkCustomCount <= clkCustomCount + 1;
+            if(clkCustomCount >= clkCustomMax)begin
+                          clkCustom <= ~clkCustom;
+                          clkCustomCount <= 0;
+                              
+                          if(beepState == 1) begin
+                             audio_out[11:0] <= audio_out[11:0] ^ customVol;
+                          end
+                            
+            end
+            
    
    an <= 4'b1111;
    seg <= 8'b11111111;
