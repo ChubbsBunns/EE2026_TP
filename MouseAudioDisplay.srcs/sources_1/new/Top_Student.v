@@ -16,8 +16,9 @@ module Top_Student (
     input [15:0] sw,
     output J_MIC3_Pin1,   
     input  J_MIC3_Pin3,   
-    output J_MIC3_Pin4,    
+//    output J_MIC3_Pin4,    
     output [3:0] JA, // 
+    output [7:0] JC, // 
     output reg [8:0]led,
     output reg [3:0] an = 4'b1111,
     output reg [7:0] seg = 8'b11111111,
@@ -53,6 +54,28 @@ module Top_Student (
     reg [25:0] clkCustomCount  = 0;
     reg [11:0] customVol = 12'b111111111111; //12'b
     reg beepState = 1;
+    
+    // start of variables and functions for oled display
+    reg clk6p25m = 1'b0; //clk
+        //reset = 0
+    wire frame_begin; 
+    wire sending_pixels;
+    wire sample_pixel;
+    wire [12:0] pixel_index;
+    reg [15:0] oled_data = 16'h0000; //pixel data
+    //output [7:0] JC
+    wire clk6p25;
+    clk6p25MHz dut4(basys_clk, clk6p25);
+    //    parameter ClkFreq = 6250000; // Hz
+    //    input clk, reset;
+    //    output frame_begin, sending_pixels, sample_pixel;
+    //    output [PixelCountWidth-1:0] pixel_index;
+    //    input [15:0] pixel_data;
+    //    output cs, sdin, sclk, d_cn, resn, vccen, pmoden;
+    Oled_Display func (clk6p25, 0, frame_begin, sending_pixels, 
+                sample_pixel, pixel_index, oled_data, JC[0], 
+                JC[1], JC[3], JC[4], JC[5], JC[6], JC[7]);
+    // end of variables and functions for oled display
   
     
     clk20k dut1(basys_clk, clk20khz);
@@ -234,8 +257,68 @@ module Top_Student (
    endcase   
    end
        
+       
 
 
+    always @ (posedge basys_clk) 
+    begin    
+    
+        //start of group oled code
+        if (pixel_index % 13'd96 <= 13'd58 && 
+            pixel_index / 13'd96 >= 13'd57 && 
+            pixel_index / 13'd96 <= 13'd59 ) begin //hori green line
+            oled_data = 16'h07E0; 
+        end else
+        if (pixel_index / 13'd96 <= 13'd59 && 
+            pixel_index % 13'd96 >= 13'd56 && 
+            pixel_index % 13'd96 <= 13'd58 ) begin //vert green line
+            oled_data = 16'h07E0;
+        end else if ((
+             //A 
+            ( ((pixel_index % 13'd96 == 13'd18 || pixel_index % 13'd96 == 13'd40) && //x axis 
+                pixel_index / 13'd96 >= 13'd8 && pixel_index / 13'd96 <= 13'd12) || 
+              (pixel_index % 13'd96 >= 13'd18 && pixel_index % 13'd96 <= 13'd40 && //y axis 
+                (pixel_index / 13'd96 == 13'd8 || pixel_index / 13'd96 == 13'd12)) )
+            || // F
+            ( ((pixel_index % 13'd96 == 13'd18 || pixel_index % 13'd96 == 13'd22) &&  // x axis
+                pixel_index / 13'd96 >= 13'd8 && pixel_index / 13'd96 <= 13'd32) ||
+              (pixel_index % 13'd96 >= 13'd18 && pixel_index % 13'd96 <= 13'd22 &&  // y axis
+                (pixel_index / 13'd96 == 13'd8 || pixel_index / 13'd96 == 13'd32)) ) 
+            || // B
+            ( ((pixel_index % 13'd96 == 13'd36 || pixel_index % 13'd96 == 13'd40) &&  // x axis
+                pixel_index / 13'd96 >= 13'd8 && pixel_index / 13'd96 <= 13'd32) || 
+              (pixel_index % 13'd96 >= 13'd36 && pixel_index % 13'd96 <= 13'd40 &&  // y axis
+                (pixel_index / 13'd96 == 13'd8 || pixel_index / 13'd96 == 13'd32)) )
+            || // G
+            ( ((pixel_index % 13'd96 == 13'd18 || pixel_index % 13'd96 == 13'd40) && //x axis 
+                pixel_index / 13'd96 >= 13'd28 && pixel_index / 13'd96 <= 13'd32) ||
+              (pixel_index % 13'd96 >= 13'd18 && pixel_index % 13'd96 <= 13'd40 && // y axis 
+                (pixel_index / 13'd96 == 13'd28 || pixel_index / 13'd96 == 13'd32)) )        
+            || // E
+            ( ((pixel_index % 13'd96 == 13'd18 || pixel_index % 13'd96 == 13'd22) &&  // x axis
+                pixel_index / 13'd96 >= 13'd28 && pixel_index / 13'd96 <= 13'd52) ||
+              (pixel_index % 13'd96 >= 13'd18 && pixel_index % 13'd96 <= 13'd22 &&  // y axis
+                (pixel_index / 13'd96 == 13'd28 || pixel_index / 13'd96 == 13'd52)) )
+            || // C
+            ( ((pixel_index % 13'd96 == 13'd36 || pixel_index % 13'd96 == 13'd40) &&  // x axis
+                pixel_index / 13'd96 >= 13'd28 && pixel_index / 13'd96 <= 13'd52) ||
+              (pixel_index % 13'd96 >= 13'd36 && pixel_index % 13'd96 <= 13'd40 &&  // y axis 
+                (pixel_index / 13'd96 == 13'd28 || pixel_index / 13'd96 == 13'd52)) )       
+            || // D
+            ( ((pixel_index % 13'd96 == 13'd18 || pixel_index % 13'd96 == 13'd40) && //x axis 
+                pixel_index / 13'd96 >= 13'd48 && pixel_index / 13'd96 <= 13'd52) ||
+              (pixel_index % 13'd96 >= 13'd18 && pixel_index % 13'd96 <= 13'd40 && // y axis
+                (pixel_index / 13'd96 == 13'd48 || pixel_index / 13'd96 == 13'd52)) ) 
+            )) begin //hori
+            oled_data = 16'hFFFF; 
+        end else begin
+            oled_data = 16'h0000;
+        end
+        //end of group oled code
+        
+    end
+
+    
         
 //   assign led[11:0] = mic_out;
 
