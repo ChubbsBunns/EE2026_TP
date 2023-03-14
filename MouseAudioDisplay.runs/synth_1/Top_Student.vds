@@ -2,12 +2,12 @@
 # Vivado v2018.2 (64-bit)
 # SW Build 2258646 on Thu Jun 14 20:03:12 MDT 2018
 # IP Build 2256618 on Thu Jun 14 22:10:49 MDT 2018
-# Start of session at: Wed Mar  8 11:20:07 2023
-# Process ID: 6728
-# Current directory: C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.runs/synth_1
+# Start of session at: Tue Mar 14 18:29:16 2023
+# Process ID: 19016
+# Current directory: C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.runs/synth_1
 # Command line: vivado.exe -log Top_Student.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source Top_Student.tcl
-# Log file: C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.runs/synth_1/Top_Student.vds
-# Journal file: C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.runs/synth_1\vivado.jou
+# Log file: C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.runs/synth_1/Top_Student.vds
+# Journal file: C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.runs/synth_1\vivado.jou
 #-----------------------------------------------------------
 source Top_Student.tcl -notrace
 Command: synth_design -top Top_Student -part xc7a35tcpg236-1
@@ -15,36 +15,42 @@ Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xc7a35t'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a35t'
 INFO: Launching helper process for spawning children vivado processes
-INFO: Helper process launched with PID 10232 
+INFO: Helper process launched with PID 17800 
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 356.184 ; gain = 98.996
+Starting RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 356.160 ; gain = 98.848
 ---------------------------------------------------------------------------------
-INFO: [Synth 8-6157] synthesizing module 'Top_Student' [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/Top_Student.v:14]
-INFO: [Synth 8-6157] synthesizing module 'clk20k' [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/clk20k.v:22]
-INFO: [Synth 8-6155] done synthesizing module 'clk20k' (1#1) [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/clk20k.v:22]
-INFO: [Synth 8-6157] synthesizing module 'clk100MHz' [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/clk100MHz.v:23]
-INFO: [Synth 8-6155] done synthesizing module 'clk100MHz' (2#1) [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/clk100MHz.v:23]
-INFO: [Synth 8-6157] synthesizing module 'clk10Hz' [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/clk10Hz.v:23]
-INFO: [Synth 8-6155] done synthesizing module 'clk10Hz' (3#1) [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/clk10Hz.v:23]
-INFO: [Synth 8-6157] synthesizing module 'Audio_Input' [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/sources_1/imports/Desktop/Audio_Input.v:25]
-INFO: [Synth 8-6155] done synthesizing module 'Audio_Input' (4#1) [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/sources_1/imports/Desktop/Audio_Input.v:25]
-INFO: [Synth 8-638] synthesizing module 'Audio_Output' [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/sources_1/imports/Desktop/Audio_Output.vhd:63]
-INFO: [Synth 8-256] done synthesizing module 'Audio_Output' (5#1) [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/sources_1/imports/Desktop/Audio_Output.vhd:63]
-WARNING: [Synth 8-689] width (32) of port connection 'DONE' does not match port width (1) of module 'Audio_Output' [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/Top_Student.v:72]
-WARNING: [Synth 8-2900] ignoring illegal expression in output port connection [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/Top_Student.v:72]
-WARNING: [Synth 8-6014] Unused sequential element clk20kcount_reg was removed.  [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/Top_Student.v:134]
-WARNING: [Synth 8-6014] Unused sequential element clk20k_reg was removed.  [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/Top_Student.v:142]
-WARNING: [Synth 8-6014] Unused sequential element clkCustom_reg was removed.  [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/Top_Student.v:156]
-INFO: [Synth 8-6155] done synthesizing module 'Top_Student' (6#1) [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/Top_Student.v:14]
-WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[15]
-WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[14]
-WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[13]
-WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[12]
-WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[11]
-WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[10]
-WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[9]
-WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[8]
-WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[7]
+INFO: [Synth 8-6157] synthesizing module 'Top_Student' [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/Top_Student.v:14]
+INFO: [Synth 8-6157] synthesizing module 'clk20k' [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/clk20k.v:22]
+INFO: [Synth 8-6155] done synthesizing module 'clk20k' (1#1) [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/clk20k.v:22]
+INFO: [Synth 8-6157] synthesizing module 'clk100MHz' [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/clk100MHz.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'clk100MHz' (2#1) [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/clk100MHz.v:23]
+INFO: [Synth 8-6157] synthesizing module 'clk10Hz' [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/clk10Hz.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'clk10Hz' (3#1) [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/clk10Hz.v:23]
+INFO: [Synth 8-6157] synthesizing module 'Audio_Input' [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/sources_1/imports/Desktop/Audio_Input.v:25]
+INFO: [Synth 8-6155] done synthesizing module 'Audio_Input' (4#1) [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/sources_1/imports/Desktop/Audio_Input.v:25]
+INFO: [Synth 8-638] synthesizing module 'Audio_Output' [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/sources_1/imports/Desktop/Audio_Output.vhd:63]
+INFO: [Synth 8-256] done synthesizing module 'Audio_Output' (5#1) [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/sources_1/imports/Desktop/Audio_Output.vhd:63]
+WARNING: [Synth 8-689] width (32) of port connection 'DONE' does not match port width (1) of module 'Audio_Output' [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/Top_Student.v:78]
+WARNING: [Synth 8-2900] ignoring illegal expression in output port connection [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/Top_Student.v:78]
+INFO: [Synth 8-6157] synthesizing module 'DylanIndividualTask' [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/DylanIndividualTask.v:23]
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/DylanIndividualTask.v:34]
+INFO: [Synth 8-6155] done synthesizing module 'DylanIndividualTask' (6#1) [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/DylanIndividualTask.v:23]
+WARNING: [Synth 8-6014] Unused sequential element clk20kcount_reg was removed.  [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/Top_Student.v:153]
+WARNING: [Synth 8-6014] Unused sequential element clk20k_reg was removed.  [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/Top_Student.v:161]
+WARNING: [Synth 8-6014] Unused sequential element clkCustom_reg was removed.  [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/Top_Student.v:175]
+INFO: [Synth 8-6155] done synthesizing module 'Top_Student' (7#1) [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/Top_Student.v:14]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[11]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[10]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[9]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[8]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[7]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[6]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[5]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[4]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[3]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[2]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[1]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[0]
 WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[6]
 WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[5]
 WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[4]
@@ -57,7 +63,7 @@ WARNING: [Synth 8-3331] design Top_Student has unconnected port btnL
 WARNING: [Synth 8-3331] design Top_Student has unconnected port btnR
 WARNING: [Synth 8-3331] design Top_Student has unconnected port btnD
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 411.293 ; gain = 154.105
+Finished RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 411.066 ; gain = 153.754
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -70,59 +76,41 @@ Report Check Netlist:
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 411.293 ; gain = 154.105
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:04 ; elapsed = 00:00:06 . Memory (MB): peak = 411.066 ; gain = 153.754
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 411.293 ; gain = 154.105
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:04 ; elapsed = 00:00:06 . Memory (MB): peak = 411.066 ; gain = 153.754
 ---------------------------------------------------------------------------------
 INFO: [Device 21-403] Loading part xc7a35tcpg236-1
 INFO: [Project 1-570] Preparing netlist for logic optimization
 
 Processing XDC Constraints
 Initializing timing engine
-Parsing XDC File [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/constrs_1/new/Basys3_Master.xdc]
-WARNING: [Vivado 12-584] No ports matched 'led[9]'. [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/constrs_1/new/Basys3_Master.xdc:65]
-CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/constrs_1/new/Basys3_Master.xdc:65]
-Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
-WARNING: [Vivado 12-584] No ports matched 'led[9]'. [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/constrs_1/new/Basys3_Master.xdc:66]
-CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/constrs_1/new/Basys3_Master.xdc:66]
-Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
-WARNING: [Vivado 12-584] No ports matched 'led[10]'. [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/constrs_1/new/Basys3_Master.xdc:67]
-CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/constrs_1/new/Basys3_Master.xdc:67]
-Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
-WARNING: [Vivado 12-584] No ports matched 'led[10]'. [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/constrs_1/new/Basys3_Master.xdc:68]
-CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/constrs_1/new/Basys3_Master.xdc:68]
-Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
-WARNING: [Vivado 12-584] No ports matched 'led[11]'. [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/constrs_1/new/Basys3_Master.xdc:69]
-CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/constrs_1/new/Basys3_Master.xdc:69]
-Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
-WARNING: [Vivado 12-584] No ports matched 'led[11]'. [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/constrs_1/new/Basys3_Master.xdc:70]
-CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/constrs_1/new/Basys3_Master.xdc:70]
-Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
-Finished Parsing XDC File [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/constrs_1/new/Basys3_Master.xdc]
-INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/constrs_1/new/Basys3_Master.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/Top_Student_propImpl.xdc].
+Parsing XDC File [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/constrs_1/new/Basys3_Master.xdc]
+Finished Parsing XDC File [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/constrs_1/new/Basys3_Master.xdc]
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/constrs_1/new/Basys3_Master.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/Top_Student_propImpl.xdc].
 Resolution: To avoid this warning, move constraints listed in [.Xil/Top_Student_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
 Completed Processing XDC Constraints
 
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.004 . Memory (MB): peak = 734.238 ; gain = 0.000
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.005 . Memory (MB): peak = 741.723 ; gain = 0.000
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:15 ; elapsed = 00:00:18 . Memory (MB): peak = 734.238 ; gain = 477.051
+Finished Constraint Validation : Time (s): cpu = 00:00:13 ; elapsed = 00:00:20 . Memory (MB): peak = 741.723 ; gain = 484.410
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7a35tcpg236-1
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:15 ; elapsed = 00:00:18 . Memory (MB): peak = 734.238 ; gain = 477.051
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:13 ; elapsed = 00:00:20 . Memory (MB): peak = 741.723 ; gain = 484.410
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:15 ; elapsed = 00:00:18 . Memory (MB): peak = 734.238 ; gain = 477.051
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:13 ; elapsed = 00:00:21 . Memory (MB): peak = 741.723 ; gain = 484.410
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-5545] ROM "count0" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
 INFO: [Synth 8-5545] ROM "my_clk0" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
@@ -132,14 +120,15 @@ INFO: [Synth 8-5545] ROM "count0" won't be mapped to RAM because address size (3
 INFO: [Synth 8-5545] ROM "my_clk0" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
 INFO: [Synth 8-802] inferred FSM for state register 'current_state_reg' in module 'Audio_Output'
 INFO: [Synth 8-5544] ROM "DONE" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "led" won't be mapped to Block RAM because address size (4) smaller than threshold (5)
+INFO: [Synth 8-5546] ROM "dylanEnable" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-5545] ROM "count_AVI" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
 INFO: [Synth 8-5545] ROM "peak_val" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
 INFO: [Synth 8-5546] ROM "seg" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "led" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "dylanEnable" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-5545] ROM "count_AVI" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
 INFO: [Synth 8-5545] ROM "peak_val" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
 INFO: [Synth 8-5546] ROM "seg" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "led" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-5544] ROM "clkCustomMax" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
 ---------------------------------------------------------------------------------------------------
                    State |                     New Encoding |                Previous Encoding 
@@ -152,7 +141,7 @@ INFO: [Synth 8-5544] ROM "clkCustomMax" won't be mapped to Block RAM because add
 ---------------------------------------------------------------------------------------------------
 INFO: [Synth 8-3354] encoded FSM with state register 'current_state_reg' using encoding 'one-hot' in module 'Audio_Output'
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:16 ; elapsed = 00:00:19 . Memory (MB): peak = 734.238 ; gain = 477.051
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:14 ; elapsed = 00:00:22 . Memory (MB): peak = 741.723 ; gain = 484.410
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -174,18 +163,18 @@ Detailed RTL Component Info :
 	               26 Bit    Registers := 1     
 	               16 Bit    Registers := 2     
 	               12 Bit    Registers := 6     
-	                9 Bit    Registers := 1     
 	                8 Bit    Registers := 1     
-	                4 Bit    Registers := 3     
-	                1 Bit    Registers := 5     
+	                5 Bit    Registers := 1     
+	                4 Bit    Registers := 4     
+	                1 Bit    Registers := 6     
 +---Muxes : 
 	   2 Input     32 Bit        Muxes := 4     
 	   2 Input     19 Bit        Muxes := 1     
 	   2 Input     16 Bit        Muxes := 2     
 	   4 Input      4 Bit        Muxes := 1     
-	   2 Input      4 Bit        Muxes := 1     
+	   2 Input      4 Bit        Muxes := 3     
 	  10 Input      4 Bit        Muxes := 1     
-	   2 Input      1 Bit        Muxes := 5     
+	   2 Input      1 Bit        Muxes := 8     
 	   3 Input      1 Bit        Muxes := 2     
 	   4 Input      1 Bit        Muxes := 1     
 ---------------------------------------------------------------------------------
@@ -205,15 +194,15 @@ Detailed RTL Component Info :
 	               32 Bit    Registers := 1     
 	               26 Bit    Registers := 1     
 	               12 Bit    Registers := 4     
-	                9 Bit    Registers := 1     
 	                8 Bit    Registers := 1     
+	                5 Bit    Registers := 1     
 	                4 Bit    Registers := 2     
-	                1 Bit    Registers := 1     
+	                1 Bit    Registers := 2     
 +---Muxes : 
 	   2 Input     32 Bit        Muxes := 1     
 	   2 Input     19 Bit        Muxes := 1     
 	  10 Input      4 Bit        Muxes := 1     
-	   2 Input      1 Bit        Muxes := 1     
+	   2 Input      1 Bit        Muxes := 2     
 Module clk20k 
 Detailed RTL Component Info : 
 +---Adders : 
@@ -263,6 +252,13 @@ Detailed RTL Component Info :
 	   3 Input      1 Bit        Muxes := 2     
 	   4 Input      1 Bit        Muxes := 1     
 	   2 Input      1 Bit        Muxes := 1     
+Module DylanIndividualTask 
+Detailed RTL Component Info : 
++---Registers : 
+	                4 Bit    Registers := 1     
++---Muxes : 
+	   2 Input      4 Bit        Muxes := 2     
+	   2 Input      1 Bit        Muxes := 2     
 ---------------------------------------------------------------------------------
 Finished RTL Hierarchical Component Statistics
 ---------------------------------------------------------------------------------
@@ -279,23 +275,26 @@ Finished Part Resource Summary
 Start Cross Boundary and Area Optimization
 ---------------------------------------------------------------------------------
 Warning: Parallel synthesis criteria is not met 
-WARNING: [Synth 8-6014] Unused sequential element dut3/count_reg was removed.  [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/clk10Hz.v:29]
-WARNING: [Synth 8-6014] Unused sequential element dut3/my_clk_reg was removed.  [C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/clk10Hz.v:30]
+WARNING: [Synth 8-6014] Unused sequential element dut3/count_reg was removed.  [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/clk10Hz.v:29]
+WARNING: [Synth 8-6014] Unused sequential element dut3/my_clk_reg was removed.  [C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/clk10Hz.v:30]
 INFO: [Synth 8-5545] ROM "dut1/count0" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
 INFO: [Synth 8-5545] ROM "dut1/my_clk0" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
 INFO: [Synth 8-5545] ROM "dut2/count0" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
 INFO: [Synth 8-5545] ROM "dut2/my_clk0" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
 INFO: [Synth 8-5545] ROM "count_AVI" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
 INFO: [Synth 8-5545] ROM "peak_val" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
-WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[15]
-WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[14]
-WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[13]
-WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[12]
-WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[11]
-WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[10]
-WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[9]
-WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[8]
-WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[7]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[11]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[10]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[9]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[8]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[7]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[6]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[5]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[4]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[3]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[2]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[1]
+WARNING: [Synth 8-3331] design Top_Student has unconnected port led[0]
 WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[6]
 WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[5]
 WARNING: [Synth 8-3331] design Top_Student has unconnected port sw[4]
@@ -349,7 +348,7 @@ INFO: [Synth 8-3333] propagating constant 1 across sequential element (\an_reg[3
 WARNING: [Synth 8-3332] Sequential element (clkCustomMax_reg[25]) is unused and will be removed from module Top_Student.
 WARNING: [Synth 8-3332] Sequential element (an_reg[3]) is unused and will be removed from module Top_Student.
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:19 ; elapsed = 00:00:21 . Memory (MB): peak = 734.238 ; gain = 477.051
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:16 ; elapsed = 00:00:25 . Memory (MB): peak = 741.723 ; gain = 484.410
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -361,13 +360,13 @@ Report RTL Partitions:
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:29 ; elapsed = 00:00:33 . Memory (MB): peak = 739.672 ; gain = 482.484
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:26 ; elapsed = 00:00:39 . Memory (MB): peak = 741.723 ; gain = 484.410
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:29 ; elapsed = 00:00:33 . Memory (MB): peak = 761.988 ; gain = 504.801
+Finished Timing Optimization : Time (s): cpu = 00:00:26 ; elapsed = 00:00:39 . Memory (MB): peak = 758.789 ; gain = 501.477
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -379,7 +378,7 @@ Report RTL Partitions:
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:30 ; elapsed = 00:00:34 . Memory (MB): peak = 762.785 ; gain = 505.598
+Finished Technology Mapping : Time (s): cpu = 00:00:26 ; elapsed = 00:00:39 . Memory (MB): peak = 759.602 ; gain = 502.289
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -399,11 +398,12 @@ Finished Flattening Before IO Insertion
 ---------------------------------------------------------------------------------
 Start Final Netlist Cleanup
 ---------------------------------------------------------------------------------
+INFO: [Synth 8-5365] Flop dylanEnable_reg is being inverted and renamed to dylanEnable_reg_inv.
 ---------------------------------------------------------------------------------
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:00:31 ; elapsed = 00:00:35 . Memory (MB): peak = 762.785 ; gain = 505.598
+Finished IO Insertion : Time (s): cpu = 00:00:27 ; elapsed = 00:00:41 . Memory (MB): peak = 759.602 ; gain = 502.289
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -416,7 +416,7 @@ Report Check Netlist:
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:00:31 ; elapsed = 00:00:35 . Memory (MB): peak = 762.785 ; gain = 505.598
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:27 ; elapsed = 00:00:41 . Memory (MB): peak = 759.602 ; gain = 502.289
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -428,25 +428,25 @@ Report RTL Partitions:
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:31 ; elapsed = 00:00:35 . Memory (MB): peak = 762.785 ; gain = 505.598
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:27 ; elapsed = 00:00:41 . Memory (MB): peak = 759.602 ; gain = 502.289
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:00:31 ; elapsed = 00:00:35 . Memory (MB): peak = 762.785 ; gain = 505.598
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:27 ; elapsed = 00:00:41 . Memory (MB): peak = 759.602 ; gain = 502.289
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:31 ; elapsed = 00:00:35 . Memory (MB): peak = 762.785 ; gain = 505.598
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:27 ; elapsed = 00:00:41 . Memory (MB): peak = 759.602 ; gain = 502.289
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:00:31 ; elapsed = 00:00:35 . Memory (MB): peak = 762.785 ; gain = 505.598
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:27 ; elapsed = 00:00:41 . Memory (MB): peak = 759.602 ; gain = 502.289
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP and Shift Register Reporting
@@ -479,38 +479,40 @@ Report Cell Usage:
 +------+-------+------+
 |1     |BUFG   |     4|
 |2     |CARRY4 |    47|
-|3     |LUT1   |    20|
-|4     |LUT2   |    22|
-|5     |LUT3   |    46|
-|6     |LUT4   |    50|
-|7     |LUT5   |    11|
+|3     |LUT1   |    21|
+|4     |LUT2   |    20|
+|5     |LUT3   |    43|
+|6     |LUT4   |    49|
+|7     |LUT5   |    12|
 |8     |LUT6   |    34|
 |9     |MUXF7  |     1|
 |10    |SRL16E |     2|
-|11    |FDRE   |   281|
-|12    |FDSE   |     7|
-|13    |IBUF   |     3|
-|14    |OBUF   |    27|
+|11    |FDRE   |   286|
+|12    |FDSE   |     3|
+|13    |IBUF   |    12|
+|14    |OBUF   |    22|
+|15    |OBUFT  |    12|
 +------+-------+------+
 
 Report Instance Areas: 
-+------+---------------+-------------+------+
-|      |Instance       |Module       |Cells |
-+------+---------------+-------------+------+
-|1     |top            |             |   555|
-|2     |  audioInput   |Audio_Input  |    65|
-|3     |  audio_output |Audio_Output |    81|
-|4     |  dut1         |clk20k       |    53|
-|5     |  dut2         |clk100MHz    |    52|
-+------+---------------+-------------+------+
++------+----------------------+--------------------+------+
+|      |Instance              |Module              |Cells |
++------+----------------------+--------------------+------+
+|1     |top                   |                    |   568|
+|2     |  audioInput          |Audio_Input         |    65|
+|3     |  audio_output        |Audio_Output        |    81|
+|4     |  dut1                |clk20k              |    53|
+|5     |  dut2                |clk100MHz           |    52|
+|6     |  dylanIndividualTask |DylanIndividualTask |     6|
++------+----------------------+--------------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:00:31 ; elapsed = 00:00:35 . Memory (MB): peak = 762.785 ; gain = 505.598
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:27 ; elapsed = 00:00:41 . Memory (MB): peak = 759.602 ; gain = 502.289
 ---------------------------------------------------------------------------------
-Synthesis finished with 0 errors, 0 critical warnings and 24 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:19 ; elapsed = 00:00:25 . Memory (MB): peak = 762.785 ; gain = 182.652
-Synthesis Optimization Complete : Time (s): cpu = 00:00:31 ; elapsed = 00:00:35 . Memory (MB): peak = 762.785 ; gain = 505.598
+Synthesis finished with 0 errors, 0 critical warnings and 27 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:17 ; elapsed = 00:00:31 . Memory (MB): peak = 759.602 ; gain = 171.633
+Synthesis Optimization Complete : Time (s): cpu = 00:00:28 ; elapsed = 00:00:41 . Memory (MB): peak = 759.602 ; gain = 502.289
 INFO: [Project 1-571] Translating synthesized netlist
-INFO: [Netlist 29-17] Analyzing 51 Unisim elements for replacement
+INFO: [Netlist 29-17] Analyzing 60 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
@@ -518,11 +520,11 @@ INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
 INFO: [Common 17-83] Releasing license: Synthesis
-87 Infos, 55 Warnings, 6 Critical Warnings and 0 Errors encountered.
+92 Infos, 55 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:00:33 ; elapsed = 00:00:38 . Memory (MB): peak = 762.785 ; gain = 518.934
+synth_design: Time (s): cpu = 00:00:30 ; elapsed = 00:00:44 . Memory (MB): peak = 759.602 ; gain = 514.762
 WARNING: [Constraints 18-5210] No constraint will be written out.
-INFO: [Common 17-1381] The checkpoint 'C:/Users/USER/Documents/EE2026_TP/MouseAudioDisplay.runs/synth_1/Top_Student.dcp' has been generated.
+INFO: [Common 17-1381] The checkpoint 'C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/Project/EE2026_TP/MouseAudioDisplay.runs/synth_1/Top_Student.dcp' has been generated.
 INFO: [runtcl-4] Executing : report_utilization -file Top_Student_utilization_synth.rpt -pb Top_Student_utilization_synth.pb
-report_utilization: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.035 . Memory (MB): peak = 762.785 ; gain = 0.000
-INFO: [Common 17-206] Exiting Vivado at Wed Mar  8 11:20:50 2023...
+report_utilization: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.038 . Memory (MB): peak = 759.602 ; gain = 0.000
+INFO: [Common 17-206] Exiting Vivado at Tue Mar 14 18:30:09 2023...

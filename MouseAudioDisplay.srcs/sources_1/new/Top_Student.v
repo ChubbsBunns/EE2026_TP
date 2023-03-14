@@ -18,7 +18,7 @@ module Top_Student (
     input  J_MIC3_Pin3,   
     output J_MIC3_Pin4,    
     output [3:0] JA, // 
-    output reg [8:0]led,
+    output [15:0]led,
     output reg [3:0] an = 4'b1111,
     output reg [7:0] seg = 8'b11111111,
     
@@ -30,7 +30,7 @@ module Top_Student (
     );
     
     wire clk20khz;
-    //wire clk100Mhz;
+    wire clk100Mhz;
     wire clk10hz;                      
     reg [11:0]mic_in = 12'b000000000000;
     wire [11:0]mic_out;
@@ -53,7 +53,14 @@ module Top_Student (
     reg [25:0] clkCustomCount  = 0;
     reg [11:0] customVol = 12'b111111111111; //12'b
     reg beepState = 1;
-  
+    reg [4:0]currentState;
+    
+    //Each module needs an enable bit, which controls whether to run code or not
+    reg dylanEnable;
+    
+
+   
+    
     
     clk20k dut1(basys_clk, clk20khz);
     clk100MHz dut2(basys_clk, clk100Mhz);
@@ -88,12 +95,27 @@ module Top_Student (
 //    reg [11:0] peak_val = 0;
 //    reg [8:0] led_on = 0;
 
+
+//Instantiating the test module
+    DylanIndividualTask dylanIndividualTask(
+    basys_clk, 
+    dylanEnable,
+    sw[15:12],
+    led[15:12]
+);
+
+//Deciding when to allow certain modules to be instantiated.
+    always @ (posedge basys_clk) begin
+       currentState <= sw[11:7];
+        if (currentState == 5'b00001)
+            dylanEnable <= 1;                       
+        else
+            dylanEnable <= 0;
+    end  
+    
+    
     always @ (posedge clk20khz)
     begin
-    
-        
-    
-         
         count_AVI <= count_AVI + 1;
         curr_mic_val <= mic_out;
         if (curr_mic_val > peak_val)
@@ -170,66 +192,66 @@ module Top_Student (
        begin
            seg <= 8'b11000000;
            an <= 4'b1110;
-           led <= 9'b000000000;
+           //led <= 9'b000000000;
        end
        1:
        begin
            seg <= 8'b11111001;
            an <= 4'b1110;
-           led <= 9'b000000001;
+           //led <= 9'b000000001;
        end
        2:
        begin
            seg <= 8'b10100100;
            an <= 4'b1110;
-           led <= 9'b000000011;
+           //led <= 9'b000000011;
        end
        3:
        begin
            seg <= 8'b10110000;
            an <= 4'b1110;
-           led <= 9'b000000111;
+           //led <= 9'b000000111;
        end
        4:
        begin
            seg <= 8'b10011001;
            an <= 4'b1110;
-           led <= 9'b000001111;
+           //led <= 9'b000001111;
        end
        5:
        begin
            seg <= 8'b10010010;
            an <= 4'b1110;
-           led <= 9'b000011111;
+           //led <= 9'b000011111;
        end
        6:
        begin
            seg <= 8'b10000011;
            an <= 4'b1110;
-           led <= 9'b000111111;
+           //led <= 9'b000111111;
        end
        7:
        begin
            seg <= 8'b11111000;
            an <= 4'b1110;
-           led <= 9'b001111111;
+           //led <= 9'b001111111;
        end
        8:
        begin
            seg <= 8'b10000000;
            an <= 4'b1110;
-           led <= 9'b011111111;
+           //led <= 9'b011111111;
        end
        9:
        begin
            seg <= 8'b10011000;
            an <= 4'b1110;
-           led <= 9'b111111111;
+           //led <= 9'b111111111;
        end
        default:
        begin
            an <= 4'b1110;
-           led <= 9'b111111111;
+           //led <= 9'b111111111;
        end
    endcase   
    end

@@ -1,8 +1,8 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -----------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2018.2 (win64) Build 2258646 Thu Jun 14 20:03:12 MDT 2018
-| Date         : Wed Mar  8 11:20:50 2023
-| Host         : DESKTOP-DDP5JVG running 64-bit major release  (build 9200)
+| Date         : Tue Mar 14 18:30:09 2023
+| Host         : DESKTOP-JJ4QT15 running 64-bit major release  (build 9200)
 | Command      : report_utilization -file Top_Student_utilization_synth.rpt -pb Top_Student_utilization_synth.pb
 | Design       : Top_Student
 | Device       : 7a35tcpg236-1
@@ -35,8 +35,8 @@ Table of Contents
 |   LUT as Memory            |    2 |     0 |      9600 |  0.02 |
 |     LUT as Distributed RAM |    0 |     0 |           |       |
 |     LUT as Shift Register  |    2 |     0 |           |       |
-| Slice Registers            |  288 |     0 |     41600 |  0.69 |
-|   Register as Flip Flop    |  288 |     0 |     41600 |  0.69 |
+| Slice Registers            |  289 |     0 |     41600 |  0.69 |
+|   Register as Flip Flop    |  289 |     0 |     41600 |  0.69 |
 |   Register as Latch        |    0 |     0 |     41600 |  0.00 |
 | F7 Muxes                   |    1 |     0 |     16300 | <0.01 |
 | F8 Muxes                   |    0 |     0 |      8150 |  0.00 |
@@ -58,8 +58,8 @@ Table of Contents
 | 0     |          Yes |           - |            - |
 | 0     |          Yes |           - |          Set |
 | 0     |          Yes |           - |        Reset |
-| 7     |          Yes |         Set |            - |
-| 281   |          Yes |       Reset |            - |
+| 3     |          Yes |         Set |            - |
+| 286   |          Yes |       Reset |            - |
 +-------+--------------+-------------+--------------+
 
 
@@ -92,7 +92,7 @@ Table of Contents
 +-----------------------------+------+-------+-----------+-------+
 |          Site Type          | Used | Fixed | Available | Util% |
 +-----------------------------+------+-------+-----------+-------+
-| Bonded IOB                  |   30 |     0 |       106 | 28.30 |
+| Bonded IOB                  |   46 |     0 |       106 | 43.40 |
 | Bonded IPADs                |    0 |     0 |        10 |  0.00 |
 | Bonded OPADs                |    0 |     0 |         4 |  0.00 |
 | PHY_CONTROL                 |    0 |     0 |         5 |  0.00 |
@@ -151,18 +151,19 @@ Table of Contents
 +----------+------+---------------------+
 | Ref Name | Used | Functional Category |
 +----------+------+---------------------+
-| FDRE     |  281 |        Flop & Latch |
-| LUT4     |   50 |                 LUT |
+| FDRE     |  286 |        Flop & Latch |
+| LUT4     |   49 |                 LUT |
 | CARRY4   |   47 |          CarryLogic |
-| LUT3     |   46 |                 LUT |
+| LUT3     |   43 |                 LUT |
 | LUT6     |   34 |                 LUT |
-| OBUF     |   27 |                  IO |
-| LUT2     |   22 |                 LUT |
-| LUT1     |   20 |                 LUT |
-| LUT5     |   11 |                 LUT |
-| FDSE     |    7 |        Flop & Latch |
+| OBUF     |   22 |                  IO |
+| LUT1     |   21 |                 LUT |
+| LUT2     |   20 |                 LUT |
+| OBUFT    |   12 |                  IO |
+| LUT5     |   12 |                 LUT |
+| IBUF     |   12 |                  IO |
 | BUFG     |    4 |               Clock |
-| IBUF     |    3 |                  IO |
+| FDSE     |    3 |        Flop & Latch |
 | SRL16E   |    2 |  Distributed Memory |
 | MUXF7    |    1 |               MuxFx |
 +----------+------+---------------------+

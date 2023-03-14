@@ -1,6 +1,7 @@
 # compile verilog/system verilog design source files
 verilog xil_defaultlib  \
 "../../../../MouseAudioDisplay.srcs/sources_1/imports/Desktop/Audio_Input.v" \
+"../../../../MouseAudioDisplay.srcs/sources_1/new/DylanIndividualTask.v" \
 "../../../../MouseAudioDisplay.srcs/sources_1/new/clk100MHz.v" \
 "../../../../MouseAudioDisplay.srcs/sources_1/new/clk10Hz.v" \
 "../../../../MouseAudioDisplay.srcs/sources_1/new/clk20k.v" \
