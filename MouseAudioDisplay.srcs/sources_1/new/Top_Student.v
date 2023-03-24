@@ -258,7 +258,7 @@ module Top_Student (
    end
        
        
-
+reg [9:0] value = 10'b0000000000;
 
     always @ (posedge basys_clk) 
     begin    
@@ -316,8 +316,45 @@ module Top_Student (
         end
         //end of group oled code
         
-    end
+        //off is 1, on is 0; A = 0, B = 1 C = 2 ...;  
+        if (~seg[0] && ~seg[1] && ~seg[2] && ~seg[3] && ~seg[4] && ~seg[5] && seg[6]) begin // 0                      
+            value[0] = 1'b1;
+            
+        end if (seg[0] && ~seg[1] && ~seg[2] && seg[3] && seg[4] && seg[5] && seg[6]) begin // 1               
+            value[1] = 1'b1;
 
+        end if (~seg[0] && ~seg[1] && seg[2] && ~seg[3] && ~seg[4] && seg[5] && ~seg[6]) begin // 2           
+            value[2] = 1'b1;
+    
+        end if (~seg[0] && ~seg[1] && ~seg[2] && ~seg[3] && seg[4] && seg[5] && ~seg[6]) begin // 3               
+            value[3] = 1'b1;
+
+        end if (seg[0] && ~seg[1] && ~seg[2] && seg[3] && seg[4] && ~seg[5] && ~seg[6]) begin // 4              
+            value[4] = 1'b1;
+
+        end if (~seg[0] && seg[1] && ~seg[2] && ~seg[3] && seg[4] && ~seg[5] && ~seg[6]) begin // 5
+            value[5] = 1'b1;
+     
+        end if (~seg[0] && seg[1] && ~seg[2] && ~seg[3] && ~seg[4] && ~seg[5] && ~seg[6]) begin // 6
+            value[6] = 1'b1;
+ 
+        end if (~seg[0] && ~seg[1] && ~seg[2] && seg[3] && seg[4] && seg[5] && ~seg[6]) begin // 7
+            value[7] = 1'b1;
+ 
+        end if (~seg[0] && ~seg[1] && ~seg[2] && ~seg[3] && ~seg[4] && ~seg[5] && ~seg[6]) begin // 8
+            value[8] = 1'b1;
+ 
+        end if (~seg[0] && ~seg[1] && ~seg[2] && ~seg[3] && seg[4] && ~seg[5] && ~seg[6]) begin // 9              
+            value[9] = 1'b1;
+            
+        end else begin
+            value = 10'd0;
+        end
+        
+    end
+    
+    
+    
     
         
 //   assign led[11:0] = mic_out;
