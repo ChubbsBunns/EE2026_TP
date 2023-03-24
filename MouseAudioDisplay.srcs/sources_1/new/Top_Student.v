@@ -18,7 +18,7 @@ module Top_Student (
     input  J_MIC3_Pin3,   
     output J_MIC3_Pin4,    
     output [3:0] JA, // 
-    output reg [15:0] led,
+    output [15:0] led,
     output reg [3:0] an = 4'b1111,
     output reg [7:0] seg = 8'b11111111,
     output [7:0] JC,
@@ -62,6 +62,9 @@ module Top_Student (
     
     //Each module needs an enable bit, which controls whether to run code or not
     reg dylanEnable;
+    
+    //digit that is currently showing on the screen, right to left: 0 to 9; 
+    reg [9:0] digit = 10'b0;
     
 
    
@@ -699,6 +702,50 @@ module Top_Student (
             oled_data = (A_empty || B_empty || C_empty || D_empty || E_empty || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
         end
 
+                //off is 1, on is 0; A = 0, B = 1 C = 2 ...;  
+        if (~seg[0] && ~seg[1] && ~seg[2] && ~seg[3] && ~seg[4] && ~seg[5] && seg[6]) begin // 0                      
+            digit[0] = 1'b1;
+            
+        end else
+        if (seg[0] && ~seg[1] && ~seg[2] && seg[3] && seg[4] && seg[5] && seg[6]) begin // 1               
+            digit[1] = 1'b1;
+            
+        end else
+        if (~seg[0] && ~seg[1] && seg[2] && ~seg[3] && ~seg[4] && seg[5] && ~seg[6]) begin // 2           
+            digit[2] = 1'b1;
+            
+        end else 
+        if (~seg[0] && ~seg[1] && ~seg[2] && ~seg[3] && seg[4] && seg[5] && ~seg[6]) begin // 3               
+            digit[3] = 1'b1;
+
+        end else
+        if (seg[0] && ~seg[1] && ~seg[2] && seg[3] && seg[4] && ~seg[5] && ~seg[6]) begin // 4              
+            digit[4] = 1'b1;
+
+        end else 
+        if (~seg[0] && seg[1] && ~seg[2] && ~seg[3] && seg[4] && ~seg[5] && ~seg[6]) begin // 5
+            digit[5] = 1'b1;
+     
+        end else
+        if (~seg[0] && seg[1] && ~seg[2] && ~seg[3] && ~seg[4] && ~seg[5] && ~seg[6]) begin // 6
+            digit[6] = 1'b1;
+ 
+        end else
+        if (~seg[0] && ~seg[1] && ~seg[2] && seg[3] && seg[4] && seg[5] && ~seg[6]) begin // 7
+            digit[7] = 1'b1;
+ 
+        end else
+        if (~seg[0] && ~seg[1] && ~seg[2] && ~seg[3] && ~seg[4] && ~seg[5] && ~seg[6]) begin // 8
+            digit[8] = 1'b1;
+ 
+        end else
+        if (~seg[0] && ~seg[1] && ~seg[2] && ~seg[3] && seg[4] && ~seg[5] && ~seg[6]) begin // 9              
+            digit[9] = 1'b1;
+            
+        end else begin
+            digit = 10'd0;
+        end
+        
     end
         
 //   assign led[11:0] = mic_out;
