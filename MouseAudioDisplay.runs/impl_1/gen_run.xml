@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="impl_1" LaunchPart="xc7a35tcpg236-1" LaunchTime="1678245603">
+<GenRun Id="impl_1" LaunchPart="xc7a35tcpg236-1" LaunchTime="1679729543">
   <File Type="BITSTR-BMM" Name="Top_Student_bd.bmm"/>
   <File Type="OPT-METHODOLOGY-DRC" Name="Top_Student_methodology_drc_opted.rpt"/>
   <File Type="INIT-TIMING" Name="Top_Student_timing_summary_init.rpt"/>
@@ -71,40 +71,27 @@
   <File Type="WBT-USG" Name="usage_statistics_webtalk.html"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
     <Filter Type="Srcs"/>
-    <File Path="$PSRCDIR/sources_1/imports/Desktop/Audio_Input.v">
+    <File Path="$PSRCDIR/sources_1/imports/Desktop/Oled_Display.v">
       <FileInfo>
-        <Attr Name="ImportPath" Val="$PPRDIR/../../../../../Audio_Input.v"/>
-        <Attr Name="ImportTime" Val="1570395502"/>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../../../Oled_Display.v"/>
+        <Attr Name="ImportTime" Val="1570395512"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PSRCDIR/sources_1/new/clk100MHz.v">
+    <File Path="$PSRCDIR/sources_1/imports/Desktop/Mouse_Control.vhd">
       <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../../../Mouse_Control.vhd"/>
+        <Attr Name="ImportTime" Val="1676185106"/>
         <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PSRCDIR/sources_1/new/clk10Hz.v">
+    <File Path="$PSRCDIR/sources_1/imports/Desktop/Ps2Interface.vhd">
       <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PSRCDIR/sources_1/new/clk20k.v">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PSRCDIR/sources_1/imports/Desktop/Audio_Output.vhd">
-      <FileInfo>
-        <Attr Name="ImportPath" Val="$PPRDIR/../../../../../Audio_Output.vhd"/>
-        <Attr Name="ImportTime" Val="1677251482"/>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../../../Ps2Interface.vhd"/>
+        <Attr Name="ImportTime" Val="1667157208"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
@@ -118,30 +105,45 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PSRCDIR/sources_1/imports/Desktop/Oled_Display.v">
+    <File Path="$PSRCDIR/sources_1/imports/Desktop/Audio_Input.v">
       <FileInfo>
         <Attr Name="AutoDisabled" Val="1"/>
-        <Attr Name="ImportPath" Val="$PPRDIR/../../../../../Oled_Display.v"/>
-        <Attr Name="ImportTime" Val="1570395512"/>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../../../Audio_Input.v"/>
+        <Attr Name="ImportTime" Val="1570395502"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PSRCDIR/sources_1/imports/Desktop/Mouse_Control.vhd">
+    <File Path="$PSRCDIR/sources_1/new/clk100MHz.v">
       <FileInfo>
         <Attr Name="AutoDisabled" Val="1"/>
-        <Attr Name="ImportPath" Val="$PPRDIR/../../../../../Mouse_Control.vhd"/>
-        <Attr Name="ImportTime" Val="1676185106"/>
         <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PSRCDIR/sources_1/imports/Desktop/Ps2Interface.vhd">
+    <File Path="$PSRCDIR/sources_1/new/clk10Hz.v">
       <FileInfo>
         <Attr Name="AutoDisabled" Val="1"/>
-        <Attr Name="ImportPath" Val="$PPRDIR/../../../../../Ps2Interface.vhd"/>
-        <Attr Name="ImportTime" Val="1667157208"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/clk20k.v">
+      <FileInfo>
+        <Attr Name="AutoDisabled" Val="1"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/Desktop/Audio_Output.vhd">
+      <FileInfo>
+        <Attr Name="AutoDisabled" Val="1"/>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../../../Audio_Output.vhd"/>
+        <Attr Name="ImportTime" Val="1677251482"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
