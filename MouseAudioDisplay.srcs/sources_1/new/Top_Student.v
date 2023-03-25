@@ -475,49 +475,38 @@ module Top_Student (
              oled_data = (A_empty || B_empty || C_empty || D_empty || E_empty || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
          end
          
-                                 //off is 1, on is 0; A = 0, B = 1 C = 2 ...;  
+             //off is 1, on is 0; A = 0, B = 1 C = 2 ...;  
          if (~seg[0] && ~seg[1] && ~seg[2] && ~seg[3] && ~seg[4] && ~seg[5] && seg[6]) begin // 0                      
-             digit = 10'b0000000001;
-             led = 15'b000000000000001;
+            digit = 10'b0000000001;
          end else
          if (seg[0] && ~seg[1] && ~seg[2] && seg[3] && seg[4] && seg[5] && seg[6]) begin // 1               
              digit = 10'b0000000010;
-             led = 15'b000000000000010;
          end else
          if (~seg[0] && ~seg[1] && seg[2] && ~seg[3] && ~seg[4] && seg[5] && ~seg[6]) begin // 2           
             digit = 10'b0000000100;
-            led = 15'b000000000000100;
          end else 
          if (~seg[0] && ~seg[1] && ~seg[2] && ~seg[3] && seg[4] && seg[5] && ~seg[6]) begin // 3               
             digit = 10'b0000001000;
-            led = 15'b000000000001000;
          end else
          if (seg[0] && ~seg[1] && ~seg[2] && seg[3] && seg[4] && ~seg[5] && ~seg[6]) begin // 4              
             digit = 10'b0000010000;
-            led = 15'b000000000010000;
          end else 
          if (~seg[0] && seg[1] && ~seg[2] && ~seg[3] && seg[4] && ~seg[5] && ~seg[6]) begin // 5
             digit = 10'b000010000;
-            led = 15'b000000000100000;
          end else
          if (~seg[0] && seg[1] && ~seg[2] && ~seg[3] && ~seg[4] && ~seg[5] && ~seg[6]) begin // 6
             digit = 10'b000100000;
-            led = 15'b000000001000000;
          end else
          if (~seg[0] && ~seg[1] && ~seg[2] && seg[3] && seg[4] && seg[5] && ~seg[6]) begin // 7
             digit = 10'b0010000000;
-            led = 15'b000000010000000;
          end else
          if (~seg[0] && ~seg[1] && ~seg[2] && ~seg[3] && ~seg[4] && ~seg[5] && ~seg[6]) begin // 8
             digit = 10'b0100000000;
-            led = 15'b000000100000000;
          end else
          if (~seg[0] && ~seg[1] && ~seg[2] && ~seg[3] && seg[4] && ~seg[5] && ~seg[6]) begin // 9              
             digit = 10'b1000000000;
-            led = 15'b000001000000000;
          end else begin
-             digit = 10'd0;
-             led = 15'd0;
+            digit = 10'd0;
          end
          
          
