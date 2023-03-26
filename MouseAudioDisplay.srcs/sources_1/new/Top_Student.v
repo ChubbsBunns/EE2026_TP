@@ -19,7 +19,7 @@ module Top_Student (
     output J_MIC3_Pin4,    
     output [3:0] JA, // 
 
-    output reg [15:0] led,
+    output [15:0] led,
     output reg [3:0] an = 4'b0000,
     reg [6:0] oledSeg = 7'b1111111,
     output [7:0] JC,
@@ -36,7 +36,7 @@ module Top_Student (
  
      wire zr_task_on;
      assign zr_task_on = sw[0];
- 
+        
  //start of OLED display + mouse parts
      reg rst = 0;
      reg [11:0] value = 12'b0;
@@ -82,6 +82,10 @@ module Top_Student (
      
      //output value: 0 is off, 1 is on, the positions indicate the digit shown.
      reg [9:0] digit = 10'd0;
+     reg [9:0] lastDigit = 10'd0; // stores the last known value of digit before clockedge. Used to check for changes in digit
+     assign led[15] = (digit  == 10'd0) ? 1'b0 : 1'b1;
+//     reg validDigit;
+//     assign ledValid = (validDigit) ? 1'b0 : 1'b1;
  
      MouseCtl u1(basys_clk, rst, xpos, ypos, zpos, left, middle, right, new_event, value, setx, sety, setmax_x, setmax_y,
      ps2_clk, ps2_data);
@@ -90,50 +94,40 @@ module Top_Student (
      JC[1], JC[3], JC[4], JC[5], JC[6], JC[7]);
      
      
+     
+     
      // >>>> beep start
      reg [25:0] clk50Mcount = 0; //
                  reg clk50M = 0;  //
                  reg [25:0] clk20kcount = 0; // 
                  reg clk20k = 0;   
      reg [11:0] audio_out = 12'b000000000000;
-     reg [28:0] beepCount = 0;
+     reg [31:0] beepCount = 0;
      reg beepState = 0;
+     reg [31:0]clk380count = 0;
+     reg clk380 = 0;
+     
+   
+     
+     reg [31:0] beepCountMax = (digit == 10'b0000000001) ? 10000000 : // 0.1 second for value of 0
+                                                           (digit == 10'b0000000010) ? 20000000 : // 0.2 second for value of 1
+                                                           (digit == 10'b0000000100) ? 30000000 : // 0.3 second
+                                                           (digit == 10'b0000001000) ? 40000000 : // 0.4 second
+                                                           (digit == 10'b0000010000) ? 50000000 : // 0.5 second
+                                                           (digit == 10'b0000100000) ? 60000000 : // 0.6 second
+                                                           (digit == 10'b0001000000) ? 70000000 : // 0.7 second
+                                                           (digit == 10'b0010000000) ? 80000000 : // 0.8 second
+                                                           (digit == 10'b0100000000) ? 90000000 : // 0.9 second
+                                                           (digit == 10'b1000000000) ? 90000000 : // 1.0 second
+                                                           0; // Default value of 0 second
      
      // << beep end
      
-     
+    
 
      always @(posedge basys_clk) begin
      
-     // <<< beeping code start
-     
-       if(beepState == 1) begin
-           beepCount <= beepCount + 1;
-                         
-                         
-           if(beepCount >= 100000000)begin
-              beepState <= 0;
-              audio_out[11] <= 0;
-           end
-                     
-                    
-        end
-        
-        // audio output
-        clk50Mcount <= clk50Mcount + 1;
-                       clk20kcount <= clk20kcount + 1; 
-        if (clk50Mcount >= 1) begin 
-                                   
-                                   clk50M <= ~clk50M;
-                                   clk50Mcount <=  0;
-                        end 
-                        
-                        if (clk20kcount >= 2500) begin 
-                                     clk20k <= ~clk20k;
-                                     clk20kcount <=  0;
-                        end 
-        
-        // << beeping code end
+    
  
          if (COUNT == 4'b1111) begin
              COUNT <= 0;
@@ -529,36 +523,48 @@ module Top_Student (
              end
              
                  //off is 1, on is 0; A = 0, B = 1 C = 2 ...;  
-             if (~oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && ~oledSeg[4] && ~oledSeg[5] && oledSeg[6]) begin // 0                      
+             if (~oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && ~oledSeg[4] && ~oledSeg[5] && oledSeg[6]) begin // 0     
+                lastDigit = digit;               
                 digit = 10'b0000000001;
+                
              end else
-             if (oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && oledSeg[3] && oledSeg[4] && oledSeg[5] && oledSeg[6]) begin // 1               
+             if (oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && oledSeg[3] && oledSeg[4] && oledSeg[5] && oledSeg[6]) begin // 1      
+             lastDigit = digit;                 
                  digit = 10'b0000000010;
              end else
-             if (~oledSeg[0] && ~oledSeg[1] && oledSeg[2] && ~oledSeg[3] && ~oledSeg[4] && oledSeg[5] && ~oledSeg[6]) begin // 2           
+             if (~oledSeg[0] && ~oledSeg[1] && oledSeg[2] && ~oledSeg[3] && ~oledSeg[4] && oledSeg[5] && ~oledSeg[6]) begin // 2         
+             lastDigit = digit;          
                 digit = 10'b0000000100;
              end else 
-             if (~oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && oledSeg[4] && oledSeg[5] && ~oledSeg[6]) begin // 3               
+             if (~oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && oledSeg[4] && oledSeg[5] && ~oledSeg[6]) begin // 3    
+             lastDigit = digit;                   
                 digit = 10'b0000001000;
              end else
-             if (oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && oledSeg[3] && oledSeg[4] && ~oledSeg[5] && ~oledSeg[6]) begin // 4              
+             if (oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && oledSeg[3] && oledSeg[4] && ~oledSeg[5] && ~oledSeg[6]) begin // 4  
+             lastDigit = digit;                    
                 digit = 10'b0000010000;
              end else 
              if (~oledSeg[0] && oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && oledSeg[4] && ~oledSeg[5] && ~oledSeg[6]) begin // 5
+             lastDigit = digit;        
                 digit = 10'b000010000;
              end else
              if (~oledSeg[0] && oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && ~oledSeg[4] && ~oledSeg[5] && ~oledSeg[6]) begin // 6
+             lastDigit = digit;        
                 digit = 10'b000100000;
              end else
              if (~oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && oledSeg[3] && oledSeg[4] && oledSeg[5] && ~oledSeg[6]) begin // 7
+             lastDigit = digit;        
                 digit = 10'b0010000000;
              end else
              if (~oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && ~oledSeg[4] && ~oledSeg[5] && ~oledSeg[6]) begin // 8
+             lastDigit = digit;        
                 digit = 10'b0100000000;
              end else
-             if (~oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && oledSeg[4] && ~oledSeg[5] && ~oledSeg[6]) begin // 9              
+             if (~oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && oledSeg[4] && ~oledSeg[5] && ~oledSeg[6]) begin // 9    
+             lastDigit = digit;                  
                 digit = 10'b1000000000;
              end else begin
+             lastDigit = digit;        
                 digit = 10'd0;
              end
      
@@ -682,6 +688,55 @@ module Top_Student (
                      end
                  end
          end
+          // <<< beeping code start
+             
+             if(lastDigit != digit) begin // check for change in digit
+                 beepCount <= 0;
+                 beepState <= 1;
+              
+             end
+             
+               if(beepState == 1) begin
+                   beepCount <= beepCount + 1;
+                                 
+                                 
+                   if(beepCount >= beepCountMax)begin
+                      beepState <= 0;
+                      audio_out[11] <= 0;
+                      beepCount = 0;
+                   end
+                             
+                            
+                end
+                
+                // audio output
+                clk50Mcount <= clk50Mcount + 1;
+                               clk20kcount <= clk20kcount + 1; 
+                if (clk50Mcount >= 1) begin 
+                                           
+                                           clk50M <= ~clk50M;
+                                           clk50Mcount <=  0;
+                                end 
+                                
+                                if (clk20kcount >= 2500) begin 
+                                             clk20k <= ~clk20k;
+                                             clk20kcount <=  0;
+                                end 
+                 if (clk380count >= 131579 ) begin  // the clock that controls the audio frequency 
+                                                       clk380 <= ~clk380;
+                                                         clk380count <=  0;
+                                                                              
+                                                                              
+                                                               if(beepState == 1) begin
+                                                            audio_out[11:0] <= audio_out[11:0] ^ 12'b100000000001; // audio volume here
+                                                            // audio_out[11] <= ~audio_out[11];// this works
+                                                                   
+                                                             end
+                                                  end
+                                
+                                
+                
+                // << beeping code end
      
      end
       Audio_Output audio_output (
