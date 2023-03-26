@@ -21,7 +21,7 @@ module Top_Student (
 
     output reg [15:0] led,
     output reg [3:0] an = 4'b0000,
-    output reg [6:0] seg = 7'b1111111,
+    reg [6:0] oledSeg = 7'b1111111,
     output [7:0] JC,
 
     input btnC,
@@ -53,7 +53,7 @@ module Top_Student (
      wire middle;
      wire right;
      wire new_event;
-//     reg [6:0] seg = 7'b1111111;
+//     reg [6:0] oledSeg = 7'b1111111;
  
      reg clk6p25m = 1'b0; //clk
      //reset = 0
@@ -88,8 +88,52 @@ module Top_Student (
  
      Oled_Display func (clk6p25m, 0, frame_begin, sending_pixels, sample_pixel, pixel_index, oled_data, JC[0],
      JC[1], JC[3], JC[4], JC[5], JC[6], JC[7]);
+     
+     
+     // >>>> beep start
+     reg [25:0] clk50Mcount = 0; //
+                 reg clk50M = 0;  //
+                 reg [25:0] clk20kcount = 0; // 
+                 reg clk20k = 0;   
+     reg [11:0] audio_out = 12'b000000000000;
+     reg [28:0] beepCount = 0;
+     reg beepState = 0;
+     
+     // << beep end
+     
+     
 
      always @(posedge basys_clk) begin
+     
+     // <<< beeping code start
+     
+       if(beepState == 1) begin
+           beepCount <= beepCount + 1;
+                         
+                         
+           if(beepCount >= 100000000)begin
+              beepState <= 0;
+              audio_out[11] <= 0;
+           end
+                     
+                    
+        end
+        
+        // audio output
+        clk50Mcount <= clk50Mcount + 1;
+                       clk20kcount <= clk20kcount + 1; 
+        if (clk50Mcount >= 1) begin 
+                                   
+                                   clk50M <= ~clk50M;
+                                   clk50Mcount <=  0;
+                        end 
+                        
+                        if (clk20kcount >= 2500) begin 
+                                     clk20k <= ~clk20k;
+                                     clk20kcount <=  0;
+                        end 
+        
+        // << beeping code end
  
          if (COUNT == 4'b1111) begin
              COUNT <= 0;
@@ -98,6 +142,7 @@ module Top_Student (
          else begin
              COUNT = COUNT + 1;
          end
+         
          
      
          
@@ -138,35 +183,35 @@ module Top_Student (
         if (zr_task_on == 1'b0) begin
              if (left) begin
                 if (xaxis >= 13'd18 && xaxis <= 13'd40 && yaxis >= 13'd8 && yaxis <= 13'd12) begin //A
-                    seg[0] = 0;
+                    oledSeg[0] = 0;
                 end else if (xaxis >= 13'd18 && xaxis <= 13'd22 && yaxis >= 13'd8 && yaxis <= 13'd32) begin //F
-                    seg[5] = 0;
+                    oledSeg[5] = 0;
                 end else if (xaxis >= 13'd36 && xaxis <= 13'd40 && yaxis >= 13'd8 && yaxis <= 13'd32) begin //B
-                    seg[1] = 0;
+                    oledSeg[1] = 0;
                 end else if (xaxis >= 13'd18 && xaxis <= 13'd40 && yaxis >= 13'd28 && yaxis <= 13'd32) begin //G
-                    seg[6] = 0;
+                    oledSeg[6] = 0;
                 end else if (xaxis >= 13'd18 && xaxis <= 13'd22 && yaxis >= 13'd28 && yaxis <= 13'd52) begin //E
-                    seg[4] = 0;
+                    oledSeg[4] = 0;
                 end else if (xaxis >= 13'd36 && xaxis <= 13'd40 && yaxis >= 13'd28 && yaxis <= 13'd52) begin //C
-                    seg[2] = 0;
+                    oledSeg[2] = 0;
                 end else if (xaxis >= 13'd18 && xaxis <= 13'd40 && yaxis >= 13'd48 && yaxis <= 13'd52) begin //D
-                    seg[3] = 0;
+                    oledSeg[3] = 0;
                 end
             end else if (right) begin
                 if (xaxis >= 13'd18 && xaxis <= 13'd40 && yaxis >= 13'd8 && yaxis <= 13'd12) begin //A
-                    seg[0] = 1;
+                    oledSeg[0] = 1;
                 end else if (xaxis >= 13'd18 && xaxis <= 13'd22 && yaxis >= 13'd8 && yaxis <= 13'd32) begin //F
-                    seg[5] = 1;
+                    oledSeg[5] = 1;
                 end else if (xaxis >= 13'd36 && xaxis <= 13'd40 && yaxis >= 13'd8 && yaxis <= 13'd32) begin //B
-                    seg[1] = 1;
+                    oledSeg[1] = 1;
                 end else if (xaxis >= 13'd18 && xaxis <= 13'd40 && yaxis >= 13'd28 && yaxis <= 13'd32) begin //G
-                    seg[6] = 1;
+                    oledSeg[6] = 1;
                 end else if (xaxis >= 13'd18 && xaxis <= 13'd22 && yaxis >= 13'd28 && yaxis <= 13'd52) begin //E
-                    seg[4] = 1;
+                    oledSeg[4] = 1;
                 end else if (xaxis >= 13'd36 && xaxis <= 13'd40 && yaxis >= 13'd28 && yaxis <= 13'd52) begin //C
-                    seg[2] = 1;
+                    oledSeg[2] = 1;
                 end else if (xaxis >= 13'd18 && xaxis <= 13'd40 && yaxis >= 13'd48 && yaxis <= 13'd52) begin //D
-                    seg[3] = 1;
+                    oledSeg[3] = 1;
                 end
             end
      
@@ -225,293 +270,293 @@ module Top_Student (
                  pixel_index % 13'd96 >= 13'd56 &&
                  pixel_index % 13'd96 <= 13'd58 ) begin //vert green line
                  oled_data = 16'h07E0;
-             end else if (seg == 7'b0) begin
+             end else if (oledSeg == 7'b0) begin
                  oled_data = (A_fill || B_fill || C_fill || D_fill || E_fill || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1) begin
+             end else if (oledSeg == 7'b1) begin
                  oled_data = (A_empty || B_fill || C_fill || D_fill || E_fill || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b10) begin
+             end else if (oledSeg == 7'b10) begin
                  oled_data = (A_fill || B_empty || C_fill || D_fill || E_fill || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b11) begin
+             end else if (oledSeg == 7'b11) begin
                  oled_data = (A_empty || B_empty || C_fill || D_fill || E_fill || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b100) begin
+             end else if (oledSeg == 7'b100) begin
                  oled_data = (A_fill || B_fill || C_empty || D_fill || E_fill || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b101) begin
+             end else if (oledSeg == 7'b101) begin
                  oled_data = (A_empty || B_fill || C_empty || D_fill || E_fill || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b110) begin
+             end else if (oledSeg == 7'b110) begin
                  oled_data = (A_fill || B_empty || C_empty || D_fill || E_fill || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b111) begin
+             end else if (oledSeg == 7'b111) begin
                  oled_data = (A_empty || B_empty || C_empty || D_fill || E_fill || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1000) begin
+             end else if (oledSeg == 7'b1000) begin
                  oled_data = (A_fill || B_fill || C_fill || D_empty || E_fill || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1001) begin
+             end else if (oledSeg == 7'b1001) begin
                  oled_data = (A_empty || B_fill || C_fill || D_empty || E_fill || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1010) begin
+             end else if (oledSeg == 7'b1010) begin
                  oled_data = (A_fill || B_empty || C_fill || D_empty || E_fill || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1011) begin
+             end else if (oledSeg == 7'b1011) begin
                  oled_data = (A_empty || B_empty || C_fill || D_empty || E_fill || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1100) begin
+             end else if (oledSeg == 7'b1100) begin
                  oled_data = (A_fill || B_fill || C_empty || D_empty || E_fill || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1101) begin
+             end else if (oledSeg == 7'b1101) begin
                  oled_data = (A_empty || B_fill || C_empty || D_empty || E_fill || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1110) begin
+             end else if (oledSeg == 7'b1110) begin
                  oled_data = (A_fill || B_empty || C_empty || D_empty || E_fill || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1111) begin
+             end else if (oledSeg == 7'b1111) begin
                  oled_data = (A_empty || B_empty || C_empty || D_empty || E_fill || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b10000) begin
+             end else if (oledSeg == 7'b10000) begin
                  oled_data = (A_fill || B_fill || C_fill || D_fill || E_empty || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b10001) begin
+             end else if (oledSeg == 7'b10001) begin
                  oled_data = (A_empty || B_fill || C_fill || D_fill || E_empty || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b10010) begin
+             end else if (oledSeg == 7'b10010) begin
                  oled_data = (A_fill || B_empty || C_fill || D_fill || E_empty || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b10011) begin
+             end else if (oledSeg == 7'b10011) begin
                  oled_data = (A_empty || B_empty || C_fill || D_fill || E_empty || F_fill || G_fill || cursor)? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b10100) begin
+             end else if (oledSeg == 7'b10100) begin
                  oled_data = (A_fill || B_fill || C_empty || D_fill || E_empty || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b10101) begin
+             end else if (oledSeg == 7'b10101) begin
                  oled_data = (A_empty || B_fill || C_empty || D_fill || E_empty || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b10110) begin
+             end else if (oledSeg == 7'b10110) begin
                  oled_data = (A_fill || B_empty || C_empty || D_fill || E_empty || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b10111) begin
+             end else if (oledSeg == 7'b10111) begin
                  oled_data = (A_empty || B_empty || C_empty || D_fill || E_empty || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b11000) begin
+             end else if (oledSeg == 7'b11000) begin
                  oled_data = (A_fill || B_fill || C_fill || D_empty || E_empty || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b11001) begin
+             end else if (oledSeg == 7'b11001) begin
                  oled_data = (A_empty || B_fill || C_fill || D_empty || E_empty || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b11010) begin
+             end else if (oledSeg == 7'b11010) begin
                  oled_data = (A_fill || B_empty || C_fill || D_empty || E_empty || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b11011) begin
+             end else if (oledSeg == 7'b11011) begin
                  oled_data = (A_empty || B_empty || C_fill || D_empty || E_empty || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b11100) begin
+             end else if (oledSeg == 7'b11100) begin
                  oled_data = (A_fill || B_fill || C_empty || D_empty || E_empty || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b11101) begin
+             end else if (oledSeg == 7'b11101) begin
                  oled_data = (A_empty || B_fill || C_empty || D_empty || E_empty || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b11110) begin
+             end else if (oledSeg == 7'b11110) begin
                  oled_data = (A_fill || B_empty || C_empty || D_empty || E_empty || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b11111) begin
+             end else if (oledSeg == 7'b11111) begin
                  oled_data = (A_empty || B_empty || C_empty || D_empty || E_empty || F_fill || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b100000) begin
+             end else if (oledSeg == 7'b100000) begin
                  oled_data = (A_fill || B_fill || C_fill || D_fill || E_fill || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b100001) begin
+             end else if (oledSeg == 7'b100001) begin
                  oled_data = (A_empty || B_fill || C_fill || D_fill || E_fill || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b100010) begin
+             end else if (oledSeg == 7'b100010) begin
                  oled_data = (A_fill || B_empty || C_fill || D_fill || E_fill || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b100011) begin
+             end else if (oledSeg == 7'b100011) begin
                  oled_data = (A_empty || B_empty || C_fill || D_fill || E_fill | F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b100100) begin
+             end else if (oledSeg == 7'b100100) begin
                  oled_data = (A_fill || B_fill || C_empty || D_fill || E_fill || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b100101) begin
+             end else if (oledSeg == 7'b100101) begin
                  oled_data = (A_empty || B_fill || C_empty || D_fill || E_fill || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b100110) begin
+             end else if (oledSeg == 7'b100110) begin
                  oled_data = (A_fill || B_empty || C_empty || D_fill || E_fill || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b100111) begin
+             end else if (oledSeg == 7'b100111) begin
                  oled_data = (A_empty || B_empty || C_empty || D_fill || E_fill || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b101000) begin
+             end else if (oledSeg == 7'b101000) begin
                  oled_data = (A_fill || B_fill || C_fill || D_empty || E_fill || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b101001) begin
+             end else if (oledSeg == 7'b101001) begin
                  oled_data = (A_empty || B_fill || C_fill || D_empty || E_fill || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b101010) begin
+             end else if (oledSeg == 7'b101010) begin
                  oled_data = (A_fill || B_empty || C_fill || D_empty || E_fill || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b101011) begin
+             end else if (oledSeg == 7'b101011) begin
                  oled_data = (A_empty || B_empty || C_fill || D_empty || E_fill || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b101100) begin
+             end else if (oledSeg == 7'b101100) begin
                  oled_data = (A_fill || B_fill || C_empty || D_empty || E_fill || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b101101) begin
+             end else if (oledSeg == 7'b101101) begin
                  oled_data = (A_empty || B_fill || C_empty || D_empty || E_fill || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b101110) begin
+             end else if (oledSeg == 7'b101110) begin
                  oled_data = (A_fill || B_empty || C_empty || D_empty || E_fill || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b101111) begin
+             end else if (oledSeg == 7'b101111) begin
                  oled_data = (A_empty || B_empty || C_empty || D_empty || E_fill || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b110000) begin
+             end else if (oledSeg == 7'b110000) begin
                  oled_data = (A_fill || B_fill || C_fill || D_fill || E_empty || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b110001) begin
+             end else if (oledSeg == 7'b110001) begin
                  oled_data = (A_empty || B_fill || C_fill || D_fill || E_empty || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b110010) begin
+             end else if (oledSeg == 7'b110010) begin
                  oled_data = (A_fill || B_empty || C_fill || D_fill || E_empty || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b110011) begin
+             end else if (oledSeg == 7'b110011) begin
                  oled_data = (A_empty || B_empty || C_fill || D_fill || E_empty || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b110100) begin
+             end else if (oledSeg == 7'b110100) begin
                  oled_data = (A_fill || B_fill || C_empty || D_fill || E_empty || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b110101) begin
+             end else if (oledSeg == 7'b110101) begin
                  oled_data = (A_empty || B_fill || C_empty || D_fill || E_empty || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b110110) begin
+             end else if (oledSeg == 7'b110110) begin
                  oled_data = (A_fill || B_empty || C_empty || D_fill || E_empty || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b110111) begin
+             end else if (oledSeg == 7'b110111) begin
                  oled_data = (A_empty || B_empty || C_empty || D_fill || E_empty || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b111000) begin
+             end else if (oledSeg == 7'b111000) begin
                  oled_data = (A_fill || B_fill || C_fill || D_empty || E_empty || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b111001) begin
+             end else if (oledSeg == 7'b111001) begin
                  oled_data = (A_empty || B_fill || C_fill || D_empty || E_empty || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b111010) begin
+             end else if (oledSeg == 7'b111010) begin
                  oled_data = (A_fill || B_empty || C_fill || D_empty || E_empty || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b111011) begin
+             end else if (oledSeg == 7'b111011) begin
                 oled_data = (A_empty || B_empty || C_fill || D_empty || E_empty || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b111100) begin
+             end else if (oledSeg == 7'b111100) begin
                  oled_data = (A_fill || B_fill || C_empty || D_empty || E_empty || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b111101) begin
+             end else if (oledSeg == 7'b111101) begin
                  oled_data = (A_empty || B_fill || C_empty || D_empty || E_empty || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b111110) begin
+             end else if (oledSeg == 7'b111110) begin
                  oled_data = (A_fill || B_empty || C_empty || D_empty || E_empty || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b111111) begin
+             end else if (oledSeg == 7'b111111) begin
                  oled_data = (A_empty || B_empty || C_empty || D_empty || E_empty || F_empty || G_fill || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1000000) begin
+             end else if (oledSeg == 7'b1000000) begin
                  oled_data = (A_fill || B_fill || C_fill || D_fill || E_fill || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1000001) begin
+             end else if (oledSeg == 7'b1000001) begin
                  oled_data = (A_empty || B_fill || C_fill || D_fill || E_fill || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1000010) begin
+             end else if (oledSeg == 7'b1000010) begin
                  oled_data = (A_fill || B_empty || C_fill || D_fill || E_fill || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1000011) begin
+             end else if (oledSeg == 7'b1000011) begin
                  oled_data = (A_empty || B_empty || C_fill || D_fill || E_fill || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1000100) begin
+             end else if (oledSeg == 7'b1000100) begin
                  oled_data = (A_fill || B_fill || C_empty || D_fill || E_fill || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1000101) begin
+             end else if (oledSeg == 7'b1000101) begin
                  oled_data = (A_empty || B_fill || C_empty || D_fill || E_fill || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1000110) begin
+             end else if (oledSeg == 7'b1000110) begin
                  oled_data = (A_fill || B_empty || C_empty || D_fill || E_fill || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1000111) begin
+             end else if (oledSeg == 7'b1000111) begin
                  oled_data = (A_empty || B_empty || C_empty || D_fill || E_fill || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1001000) begin
+             end else if (oledSeg == 7'b1001000) begin
                  oled_data = (A_fill || B_fill || C_fill || D_empty || E_fill || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1001001) begin
+             end else if (oledSeg == 7'b1001001) begin
                  oled_data = (A_empty || B_fill || C_fill || D_empty || E_fill || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1001010) begin
+             end else if (oledSeg == 7'b1001010) begin
                  oled_data = (A_fill || B_empty || C_fill || D_empty || E_fill || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1001011) begin
+             end else if (oledSeg == 7'b1001011) begin
                  oled_data = (A_empty || B_empty || C_fill || D_empty || E_fill || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1001100) begin
+             end else if (oledSeg == 7'b1001100) begin
                  oled_data = (A_fill || B_fill || C_empty || D_empty || E_fill || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1001101) begin
+             end else if (oledSeg == 7'b1001101) begin
                  oled_data = (A_empty || B_fill || C_empty || D_empty || E_fill || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1001110) begin
+             end else if (oledSeg == 7'b1001110) begin
                  oled_data = (A_fill || B_empty || C_empty || D_empty || E_fill || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1001111) begin
+             end else if (oledSeg == 7'b1001111) begin
                  oled_data = (A_empty || B_empty || C_empty || D_empty || E_fill || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1010000) begin
+             end else if (oledSeg == 7'b1010000) begin
                  oled_data = (A_fill || B_fill || C_fill || D_fill || E_empty || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1010001) begin
+             end else if (oledSeg == 7'b1010001) begin
                  oled_data = (A_empty || B_fill || C_fill || D_fill || E_empty || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1010010) begin
+             end else if (oledSeg == 7'b1010010) begin
                  oled_data = (A_fill || B_empty || C_fill || D_fill || E_empty || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1010011) begin
+             end else if (oledSeg == 7'b1010011) begin
                  oled_data = (A_empty || B_empty || C_fill || D_fill || E_empty || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1010100) begin
+             end else if (oledSeg == 7'b1010100) begin
                  oled_data = (A_fill || B_fill || C_empty || D_fill || E_empty || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1010101) begin
+             end else if (oledSeg == 7'b1010101) begin
                  oled_data = (A_empty || B_fill || C_empty || D_fill || E_empty || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1010110) begin
+             end else if (oledSeg == 7'b1010110) begin
                  oled_data = (A_fill || B_empty || C_empty || D_fill || E_empty || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1010111) begin
+             end else if (oledSeg == 7'b1010111) begin
                  oled_data = (A_empty || B_empty || C_empty || D_fill || E_empty || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1011000) begin
+             end else if (oledSeg == 7'b1011000) begin
                  oled_data = (A_fill || B_fill || C_fill || D_empty || E_empty || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1011001) begin
+             end else if (oledSeg == 7'b1011001) begin
                  oled_data = (A_empty || B_fill || C_fill || D_empty || E_empty || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1011010) begin
+             end else if (oledSeg == 7'b1011010) begin
                  oled_data = (A_fill || B_empty || C_fill || D_empty || E_empty || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1011011) begin
+             end else if (oledSeg == 7'b1011011) begin
                  oled_data = (A_empty || B_empty || C_fill || D_empty || E_empty || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1011100) begin
+             end else if (oledSeg == 7'b1011100) begin
                  oled_data = (A_fill || B_fill || C_empty || D_empty || E_empty || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1011101) begin
+             end else if (oledSeg == 7'b1011101) begin
                  oled_data = (A_empty || B_fill || C_empty || D_empty || E_empty || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1011110) begin
+             end else if (oledSeg == 7'b1011110) begin
                  oled_data = (A_fill || B_empty || C_empty || D_empty || E_empty || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1011111) begin
+             end else if (oledSeg == 7'b1011111) begin
                  oled_data = (A_empty || B_empty || C_empty || D_empty || E_empty || F_fill || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1100000) begin
+             end else if (oledSeg == 7'b1100000) begin
                  oled_data = (A_fill || B_fill || C_fill || D_fill || E_fill || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1100001) begin
+             end else if (oledSeg == 7'b1100001) begin
                  oled_data = (A_empty || B_fill || C_fill || D_fill || E_fill || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1100010) begin
+             end else if (oledSeg == 7'b1100010) begin
                  oled_data = (A_fill || B_empty || C_fill || D_fill || E_fill || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1100011) begin
+             end else if (oledSeg == 7'b1100011) begin
                  oled_data = (A_empty || B_empty || C_fill || D_fill || E_fill || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1100100) begin
+             end else if (oledSeg == 7'b1100100) begin
                  oled_data = (A_fill || B_fill || C_empty || D_fill || E_fill || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1100101) begin
+             end else if (oledSeg == 7'b1100101) begin
                  oled_data = (A_empty || B_fill || C_empty || D_fill || E_fill || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1100110) begin
+             end else if (oledSeg == 7'b1100110) begin
                  oled_data = (A_fill || B_empty || C_empty || D_fill || E_fill || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1100111) begin
+             end else if (oledSeg == 7'b1100111) begin
                  oled_data = (A_empty || B_empty || C_empty || D_fill || E_fill || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1101000) begin
+             end else if (oledSeg == 7'b1101000) begin
                  oled_data = (A_fill || B_fill || C_fill || D_empty || E_fill || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1101001) begin
+             end else if (oledSeg == 7'b1101001) begin
                  oled_data = (A_empty || B_fill || C_fill || D_empty || E_fill || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1101010) begin
+             end else if (oledSeg == 7'b1101010) begin
                  oled_data = (A_fill || B_empty || C_fill || D_empty || E_fill || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1101011) begin
+             end else if (oledSeg == 7'b1101011) begin
                  oled_data = (A_empty || B_empty || C_fill || D_empty || E_fill || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1101100) begin
+             end else if (oledSeg == 7'b1101100) begin
                  oled_data = (A_fill || B_fill || C_empty || D_empty || E_fill || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1101101) begin
+             end else if (oledSeg == 7'b1101101) begin
                  oled_data = (A_empty || B_fill || C_empty || D_empty || E_fill || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1101110) begin
+             end else if (oledSeg == 7'b1101110) begin
                  oled_data = (A_fill || B_empty || C_empty || D_empty || E_fill || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1101111) begin
+             end else if (oledSeg == 7'b1101111) begin
                  oled_data = (A_empty || B_empty || C_empty || D_empty || E_fill || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1110000) begin
+             end else if (oledSeg == 7'b1110000) begin
                  oled_data = (A_fill || B_fill || C_fill || D_fill || E_empty || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1110001) begin
+             end else if (oledSeg == 7'b1110001) begin
                  oled_data = (A_empty || B_fill || C_fill || D_fill || E_empty || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1110010) begin
+             end else if (oledSeg == 7'b1110010) begin
                  oled_data = (A_fill || B_empty || C_fill || D_fill || E_empty || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1110011) begin
+             end else if (oledSeg == 7'b1110011) begin
                  oled_data = (A_empty || B_empty || C_fill || D_fill || E_empty || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1110100) begin
+             end else if (oledSeg == 7'b1110100) begin
                  oled_data = (A_fill || B_fill || C_empty || D_fill || E_empty || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1110101) begin
+             end else if (oledSeg == 7'b1110101) begin
                  oled_data = (A_empty || B_fill || C_empty || D_fill || E_empty || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1110110) begin
+             end else if (oledSeg == 7'b1110110) begin
                  oled_data = (A_fill || B_empty || C_empty || D_fill || E_empty || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1110111) begin
+             end else if (oledSeg == 7'b1110111) begin
                  oled_data = (A_empty || B_empty || C_empty || D_fill || E_empty || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1111000) begin
+             end else if (oledSeg == 7'b1111000) begin
                  oled_data = (A_fill || B_fill || C_fill || D_empty || E_empty || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1111001) begin
+             end else if (oledSeg == 7'b1111001) begin
                  oled_data = (A_empty || B_fill || C_fill || D_empty || E_empty || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1111010) begin
+             end else if (oledSeg == 7'b1111010) begin
                  oled_data = (A_fill || B_empty || C_fill || D_empty || E_empty || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1111011) begin
+             end else if (oledSeg == 7'b1111011) begin
                  oled_data = (A_empty || B_empty || C_fill || D_empty || E_empty || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1111100) begin
+             end else if (oledSeg == 7'b1111100) begin
                  oled_data = (A_fill || B_fill || C_empty || D_empty || E_empty || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1111101) begin
+             end else if (oledSeg == 7'b1111101) begin
                  oled_data = (A_empty || B_fill || C_empty || D_empty || E_empty || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1111110) begin
+             end else if (oledSeg == 7'b1111110) begin
                  oled_data = (A_fill || B_empty || C_empty || D_empty || E_empty || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
-             end else if (seg == 7'b1111111) begin
+             end else if (oledSeg == 7'b1111111) begin
                  oled_data = (A_empty || B_empty || C_empty || D_empty || E_empty || F_empty || G_empty || cursor) ? 16'hFFFF : 16'h0;
              end
              
                  //off is 1, on is 0; A = 0, B = 1 C = 2 ...;  
-             if (~seg[0] && ~seg[1] && ~seg[2] && ~seg[3] && ~seg[4] && ~seg[5] && seg[6]) begin // 0                      
+             if (~oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && ~oledSeg[4] && ~oledSeg[5] && oledSeg[6]) begin // 0                      
                 digit = 10'b0000000001;
              end else
-             if (seg[0] && ~seg[1] && ~seg[2] && seg[3] && seg[4] && seg[5] && seg[6]) begin // 1               
+             if (oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && oledSeg[3] && oledSeg[4] && oledSeg[5] && oledSeg[6]) begin // 1               
                  digit = 10'b0000000010;
              end else
-             if (~seg[0] && ~seg[1] && seg[2] && ~seg[3] && ~seg[4] && seg[5] && ~seg[6]) begin // 2           
+             if (~oledSeg[0] && ~oledSeg[1] && oledSeg[2] && ~oledSeg[3] && ~oledSeg[4] && oledSeg[5] && ~oledSeg[6]) begin // 2           
                 digit = 10'b0000000100;
              end else 
-             if (~seg[0] && ~seg[1] && ~seg[2] && ~seg[3] && seg[4] && seg[5] && ~seg[6]) begin // 3               
+             if (~oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && oledSeg[4] && oledSeg[5] && ~oledSeg[6]) begin // 3               
                 digit = 10'b0000001000;
              end else
-             if (seg[0] && ~seg[1] && ~seg[2] && seg[3] && seg[4] && ~seg[5] && ~seg[6]) begin // 4              
+             if (oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && oledSeg[3] && oledSeg[4] && ~oledSeg[5] && ~oledSeg[6]) begin // 4              
                 digit = 10'b0000010000;
              end else 
-             if (~seg[0] && seg[1] && ~seg[2] && ~seg[3] && seg[4] && ~seg[5] && ~seg[6]) begin // 5
+             if (~oledSeg[0] && oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && oledSeg[4] && ~oledSeg[5] && ~oledSeg[6]) begin // 5
                 digit = 10'b000010000;
              end else
-             if (~seg[0] && seg[1] && ~seg[2] && ~seg[3] && ~seg[4] && ~seg[5] && ~seg[6]) begin // 6
+             if (~oledSeg[0] && oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && ~oledSeg[4] && ~oledSeg[5] && ~oledSeg[6]) begin // 6
                 digit = 10'b000100000;
              end else
-             if (~seg[0] && ~seg[1] && ~seg[2] && seg[3] && seg[4] && seg[5] && ~seg[6]) begin // 7
+             if (~oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && oledSeg[3] && oledSeg[4] && oledSeg[5] && ~oledSeg[6]) begin // 7
                 digit = 10'b0010000000;
              end else
-             if (~seg[0] && ~seg[1] && ~seg[2] && ~seg[3] && ~seg[4] && ~seg[5] && ~seg[6]) begin // 8
+             if (~oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && ~oledSeg[4] && ~oledSeg[5] && ~oledSeg[6]) begin // 8
                 digit = 10'b0100000000;
              end else
-             if (~seg[0] && ~seg[1] && ~seg[2] && ~seg[3] && seg[4] && ~seg[5] && ~seg[6]) begin // 9              
+             if (~oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && oledSeg[4] && ~oledSeg[5] && ~oledSeg[6]) begin // 9              
                 digit = 10'b1000000000;
              end else begin
                 digit = 10'd0;
@@ -639,6 +684,18 @@ module Top_Student (
          end
      
      end
+      Audio_Output audio_output (
+                .CLK(clk50M), // -- System Clock (50MHz)  
+                .START(clk20k), // -- Sampling clock 20kHz
+                .DATA1(audio_out[11:0]), //   12-bit digital data1
+                .DATA2(audio_out[11:0]), // 12 bit digital data 2
+                .RST(0), // input reset
+                .D1(JA[1]), // -- PmodDA2 Pin2 (Serial data1)
+                .D2(JA[2]), // -- PmodDA2 Pin3 (Serial data2)
+                .CLK_OUT(JA[3]), //  -- PmodDA2 Pin4 (Serial Clock)
+                .nSYNC(JA[0]), //  -- PmodDA2 Pin1 (Chip Select)
+                .DONE(0)
+            );
 
  
 
