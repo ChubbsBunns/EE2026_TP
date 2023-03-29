@@ -1,7 +1,7 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2018.2 (win64) Build 2258646 Thu Jun 14 20:03:12 MDT 2018
-| Date         : Wed Mar 29 12:06:56 2023
+| Date         : Wed Mar 29 21:56:09 2023
 | Host         : DESKTOP-JJ4QT15 running 64-bit major release  (build 9200)
 | Command      : report_control_sets -verbose -file Top_Student_control_sets_placed.rpt
 | Design       : Top_Student
@@ -23,8 +23,8 @@ Table of Contents
 +----------------------------------------------------------+-------+
 |                          Status                          | Count |
 +----------------------------------------------------------+-------+
-| Number of unique control sets                            |    43 |
-| Unused register locations in slices containing registers |    80 |
+| Number of unique control sets                            |    47 |
+| Unused register locations in slices containing registers |    82 |
 +----------------------------------------------------------+-------+
 
 
@@ -35,11 +35,11 @@ Table of Contents
 | Fanout | Control Sets |
 +--------+--------------+
 |      2 |            2 |
-|      6 |            1 |
-|      8 |            6 |
+|      6 |            2 |
+|      8 |            7 |
 |     12 |            1 |
-|     14 |            3 |
-|    16+ |           30 |
+|     14 |            2 |
+|    16+ |           33 |
 +--------+--------------+
 
 
@@ -49,12 +49,12 @@ Table of Contents
 +--------------+-----------------------+------------------------+-----------------+--------------+
 | Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
 +--------------+-----------------------+------------------------+-----------------+--------------+
-| No           | No                    | No                     |             374 |           71 |
+| No           | No                    | No                     |             322 |           63 |
 | No           | No                    | Yes                    |               0 |            0 |
-| No           | Yes                   | No                     |             640 |           89 |
-| Yes          | No                    | No                     |             292 |           45 |
+| No           | Yes                   | No                     |             658 |           91 |
+| Yes          | No                    | No                     |             342 |           58 |
 | Yes          | No                    | Yes                    |               0 |            0 |
-| Yes          | Yes                   | No                     |             198 |           26 |
+| Yes          | Yes                   | No                     |             212 |           31 |
 +--------------+-----------------------+------------------------+-----------------+--------------+
 
 
@@ -64,49 +64,53 @@ Table of Contents
 +------------------------------+---------------------------------------------------+---------------------------------------------------+------------------+----------------+
 |         Clock Signal         |                   Enable Signal                   |                  Set/Reset Signal                 | Slice Load Count | Bel Load Count |
 +------------------------------+---------------------------------------------------+---------------------------------------------------+------------------+----------------+
-|  clk50M                      |                                                   |                                                   |                1 |              2 |
 | ~clk6p25m_BUFG               |                                                   |                                                   |                1 |              2 |
+|  clk50M                      |                                                   |                                                   |                1 |              2 |
 |  JA_OBUF_BUFG[3]             | audio_output/FSM_onehot_current_state[3]_i_1_n_0  |                                                   |                1 |              6 |
-|  JA_OBUF_BUFG[3]             | audio_output/temp2                                |                                                   |                2 |              8 |
+|  digit_timer_reg[0]_i_2_n_0  |                                                   |                                                   |                1 |              6 |
+|  basys_clk_IBUF_BUFG         |                                                   | u1/Inst_Ps2Interface/data_inter0                  |                1 |              8 |
+|  JA_OBUF_BUFG[3]             | audio_output/temp2                                |                                                   |                1 |              8 |
+|  J_MIC3_Pin1_OBUF_BUFG       | count_AVI[31]_i_1_n_0                             |                                                   |                2 |              8 |
+|  digit_timer_reg[0]_i_2_n_0  | an[3]_i_1_n_0                                     |                                                   |                3 |              8 |
+|  basys_clk_IBUF_BUFG         |                                                   | u1/Inst_Ps2Interface/clk_inter0                   |                1 |              8 |
 |  basys_clk_IBUF_BUFG         |                                                   | COUNT[3]_i_1_n_0                                  |                1 |              8 |
 |  basys_clk_IBUF_BUFG         | u1/Inst_Ps2Interface/shift_frame                  | u1/Inst_Ps2Interface/reset_bit_count              |                2 |              8 |
-|  J_MIC3_Pin1_OBUF_BUFG       | count_AVI[31]_i_1_n_0                             |                                                   |                2 |              8 |
-|  basys_clk_IBUF_BUFG         |                                                   | u1/Inst_Ps2Interface/clk_inter0                   |                1 |              8 |
-|  basys_clk_IBUF_BUFG         |                                                   | u1/Inst_Ps2Interface/data_inter0                  |                1 |              8 |
-|  basys_clk_IBUF_BUFG         | u1/Inst_Ps2Interface/right_down_reg               |                                                   |                1 |             12 |
-|  dut2/led_reg[0]             |                                                   | state_val[3]                                      |                2 |             14 |
+|  basys_clk_IBUF_BUFG         | u1/Inst_Ps2Interface/right_down_reg               |                                                   |                2 |             12 |
 |  basys_clk_IBUF_BUFG         | u1/Inst_Ps2Interface/delay_63clk_count[6]_i_2_n_0 | u1/Inst_Ps2Interface/delay_63clk_count[6]_i_1_n_0 |                2 |             14 |
-|  basys_clk_IBUF_BUFG         | oledSeg[6]_i_1_n_0                                |                                                   |                5 |             14 |
-|  basys_clk_IBUF_BUFG         | u1/write_data                                     |                                                   |                2 |             16 |
+|  basys_clk_IBUF_BUFG         | oledSeg[6]_i_2_n_0                                | oledSeg0                                          |                5 |             14 |
 |  JA_OBUF_BUFG[3]             | audio_output/FSM_onehot_current_state_reg_n_0_[1] |                                                   |                2 |             16 |
-|  basys_clk_IBUF_BUFG         | u1/Inst_Ps2Interface/x_inc_reg[0]                 |                                                   |                1 |             16 |
+|  basys_clk_IBUF_BUFG         | u1/Inst_Ps2Interface/load_rx_data                 |                                                   |                3 |             16 |
+|  digit_timer_reg[0]_i_2_n_0  | seg0                                              |                                                   |                6 |             16 |
+|  basys_clk_IBUF_BUFG         | u1/write_data                                     |                                                   |                2 |             16 |
 |  basys_clk_IBUF_BUFG         | u1/Inst_Ps2Interface/y_inc_reg[0]                 |                                                   |                3 |             16 |
-|  basys_clk_IBUF_BUFG         | u1/Inst_Ps2Interface/load_rx_data                 |                                                   |                1 |             16 |
+|  basys_clk_IBUF_BUFG         | u1/Inst_Ps2Interface/x_inc_reg[0]                 |                                                   |                1 |             16 |
 |  basys_clk_IBUF_BUFG         | u1/Inst_Ps2Interface/frame[9]_i_1_n_0             |                                                   |                2 |             20 |
-|  basys_clk_IBUF_BUFG         | u1/Inst_Ps2Interface/delay_20us_count[10]_i_2_n_0 | u1/Inst_Ps2Interface/delay_20us_count[10]_i_1_n_0 |                4 |             22 |
+|  basys_clk_IBUF_BUFG         | oledSeg[6]_i_2_n_0                                |                                                   |                4 |             20 |
+|  digit_timer_reg[0]_i_2_n_0  | led[15]_i_1_n_0                                   |                                                   |                4 |             20 |
+|  basys_clk_IBUF_BUFG         | u1/Inst_Ps2Interface/delay_20us_count[10]_i_2_n_0 | u1/Inst_Ps2Interface/delay_20us_count[10]_i_1_n_0 |                3 |             22 |
+|  J_MIC3_Pin1_OBUF_BUFG       | peak_val_reg[11]_i_1_n_2                          | count_AVI[31]_i_1_n_0                             |                3 |             24 |
 |  basys_clk_IBUF_BUFG         |                                                   | J_MIC3_Pin1_OBUF_BUFG                             |                3 |             24 |
-|  basys_clk_IBUF_BUFG         | u1/x_new_reg_n_0                                  |                                                   |                6 |             24 |
-|  basys_clk_IBUF_BUFG         | u1/y_new_reg_n_0                                  |                                                   |                4 |             24 |
+|  basys_clk_IBUF_BUFG         | u1/x_new_reg_n_0                                  |                                                   |                4 |             24 |
+|  basys_clk_IBUF_BUFG         | u1/y_new_reg_n_0                                  |                                                   |                5 |             24 |
 | ~audioInput/J_MIC3_Pin4_OBUF |                                                   |                                                   |                4 |             24 |
-|  J_MIC3_Pin1_OBUF_BUFG       | peak_val_reg[11]_i_1_n_2                          | count_AVI[31]_i_1_n_0                             |                2 |             24 |
-|  dut2/led_reg[0]             |                                                   |                                                   |                4 |             26 |
 |  basys_clk_IBUF_BUFG         | u1/Inst_Ps2Interface/delay_100us_count[0]_i_2_n_0 | u1/Inst_Ps2Interface/clear                        |                4 |             28 |
+|  digit_timer_reg[0]_i_2_n_0  |                                                   | digit_timer[16]_i_1_n_0                           |                4 |             32 |
 | ~clk6p25m_BUFG               |                                                   | func/frame_counter[16]_i_1_n_0                    |                5 |             34 |
 |  JA_OBUF_BUFG[3]             | audio_output/FSM_onehot_current_state_reg_n_0_[1] | audio_output/FSM_onehot_current_state_reg_n_0_[0] |                4 |             38 |
 | ~clk6p25m_BUFG               | func/delay[0]_i_1_n_0                             |                                                   |                5 |             40 |
-|  basys_clk_IBUF_BUFG         |                                                   | u1/reset_timeout_cnt_reg_n_0                      |                5 |             48 |
-|  J_MIC3_Pin1_OBUF_BUFG       |                                                   |                                                   |                5 |             50 |
-|  basys_clk_IBUF_BUFG         |                                                   | u1/reset_periodic_check_cnt__0                    |                7 |             52 |
+|  basys_clk_IBUF_BUFG         |                                                   | u1/reset_timeout_cnt_reg_n_0                      |                4 |             48 |
+|  J_MIC3_Pin1_OBUF_BUFG       |                                                   |                                                   |                9 |             50 |
 |  basys_clk_IBUF_BUFG         |                                                   | clear                                             |                7 |             52 |
 |  basys_clk_IBUF_BUFG         |                                                   | clk20kcount[0]_i_1_n_0                            |                7 |             52 |
-|  basys_clk_IBUF_BUFG         |                                                   | dut1/count[31]_i_1_n_0                            |                8 |             62 |
-|  basys_clk_IBUF_BUFG         |                                                   | dut2/count[31]_i_1__0_n_0                         |                8 |             62 |
+|  basys_clk_IBUF_BUFG         |                                                   | u1/reset_periodic_check_cnt__0                    |                7 |             52 |
 |  J_MIC3_Pin1_OBUF_BUFG       |                                                   | count_AVI[31]_i_1_n_0                             |                8 |             62 |
+|  basys_clk_IBUF_BUFG         |                                                   | dut1/count[31]_i_1__0_n_0                         |                8 |             62 |
+|  basys_clk_IBUF_BUFG         |                                                   | dut2/count[31]_i_1_n_0                            |                8 |             62 |
 |  basys_clk_IBUF_BUFG         |                                                   | clk380count[0]_i_1_n_0                            |                8 |             64 |
-|  basys_clk_IBUF_BUFG         | beepState                                         | u1/beepCount                                      |                8 |             64 |
+|  basys_clk_IBUF_BUFG         | beepState                                         | u1/beepCount1                                     |                8 |             64 |
 | ~clk6p25m_BUFG               | func/state                                        |                                                   |                9 |             64 |
-| ~clk6p25m_BUFG               |                                                   | func/spi_word[39]_i_1_n_0                         |               18 |             90 |
-|  basys_clk_IBUF_BUFG         |                                                   |                                                   |               56 |            270 |
+| ~clk6p25m_BUFG               |                                                   | func/spi_word[39]_i_1_n_0                         |               19 |             90 |
+|  basys_clk_IBUF_BUFG         |                                                   |                                                   |               47 |            238 |
 +------------------------------+---------------------------------------------------+---------------------------------------------------+------------------+----------------+
 
 

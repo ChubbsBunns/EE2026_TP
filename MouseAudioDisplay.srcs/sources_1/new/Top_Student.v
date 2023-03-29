@@ -141,7 +141,7 @@ module Top_Student (
      //output value: 0 is off, 1 is on, the positions indicate the digit shown.
      reg [9:0] digit = 10'd0;
      reg [9:0] lastDigit = 10'd0; // stores the last known value of digit before clockedge. Used to check for changes in digit
-     assign led[15] = (digit  == 10'd0 | sw[15] == 0) ? 1'b0 : 1'b1;
+     //assign led[15] = (digit  == 10'd0 | sw[15] == 0) ? 1'b0 : 1'b1;
      reg unlock = 0;
      reg validNum = 0;
      //assign led[14] = (unlock == 0) ? 1'b0 : 1'b1;
@@ -155,117 +155,248 @@ module Top_Student (
      Oled_Display func (clk6p25m, 0, frame_begin, sending_pixels, sample_pixel, pixel_index, oled_data, JC[0],
      JC[1], JC[3], JC[4], JC[5], JC[6], JC[7]);
      
-     always @ (posedge clk100Mhz)begin
-//     assign led[15] = (digit  == 10'd0) ? 1'b0 : 1'b1;
-     if (sw[15] == 1'b1)
-        led[15] <= 1'b0;
-     else
-        led[15] <= 1'b1;
+     reg [1:0] digit_select; //This is a 2 bit counter
+     reg [16:0] digit_timer; //this handles the refresh rate of the anodes
      
-     an <= 4'b1111;
-     seg <= 8'b11111111;
-     case(state_val)
-         0:
-         begin
-             seg <= 8'b11000000;
-             an <= 4'b1110;
-             if (sw[15] == 1'b1)
-                led <= 16'b0000000000000000;
-             else
-                led <= 16'b1000000000000000;
-         end
-         1:
-         begin
-             seg <= 8'b11111001;
-             an <= 4'b1110;
-             if (sw[15] == 1'b1)
-                led <= 16'b0000000000000001;
-             else
-                led <= 16'b1000000000000001;
-         end
-         2:
-         begin
-             seg <= 8'b10100100;
-             an <= 4'b1110;
-             if (sw[15] == 1'b1)
-                led <= 16'b0000000000000011;
-             else
-                led <= 16'b1000000000000011;
-             
-         end
-         3:
-         begin
-             seg <= 8'b10110000;
-             an <= 4'b1110;
-             if (sw[15] == 1'b1)
-                led <= 16'b0000000000000111;
-             else
-                led <= 16'b1000000000000111;
-         end
-         4:
-         begin
-             seg <= 8'b10011001;
-             an <= 4'b1110;
-             if (sw[15] == 1'b1)
-                led <= 16'b0000000000001111;
-             else
-                led <= 16'b1000000000001111;
-         end
-         5:
-         begin
-             seg <= 8'b10010010;
-             an <= 4'b1110;
-             if (sw[15] == 1'b1)
-                led <= 16'b0000000000011111;
-             else
-                led <= 16'b1000000000011111;
-         end
-         6:
-         begin
-             seg <= 8'b10000011;
-             an <= 4'b1110;
-             if (sw[15] == 1'b1)
-                led <= 16'b0000000000111111;
-             else
-                led <= 16'b1000000000111111;
-         end
-         7:
-         begin
-             seg <= 8'b11111000;
-             an <= 4'b1110;
-             if (sw[15] == 1'b1)
-                led <= 16'b0000000001111111;
-             else
-                led <= 16'b1000000001111111;
-         end
-         8:
-         begin
-             seg <= 8'b10000000;
-             an <= 4'b1110;
-             if (sw[15] == 1'b1)
-                led <= 16'b0000000011111111;
-             else
-                led <= 16'b1000000011111111;
-         end
-         9:
-         begin
-             seg <= 8'b10011000;
-             an <= 4'b1110;
-             if (sw[15] == 1'b1 && )
-                led <= 16'b0000000111111111;
-             else
-                led <= 16'b1000000111111111;
-         end
-         default:
-         begin
-             an <= 4'b1110;
-             if (sw[15] == 1'b1)
-                led <= 16'b0000000111111111;
-             else
-                led <= 16'b1000000111111111;
-         end
-     endcase   
+     
+     always @ (posedge clk100Mhz) begin
+        if (digit_timer == 99_999) 
+        begin
+            digit_timer <= 0;
+            if (digit_select == 2'b10)
+            begin
+                digit_select <= 2'b00;
+            end         
+            else
+            begin
+                digit_select <= digit_select + 1;
+            end
+        end
+        else
+            digit_timer <= digit_timer + 1;
      end
+ 
+ 
+ //This was just under the clk100Mhz clock
+ //     assign led[15] = (digit  == 10'd0) ? 1'b0 : 1'b1;
+     //     if (sw[15] == 1'b1)
+     //        led[15] <= 1'b0;
+     //     else
+     //        led[15] <= 1'b1;    
+     always @ (posedge clk100Mhz)begin
+
+    
+     case(digit_select)
+        2'b00:
+            begin
+            if (validNum == 1)
+                begin
+                an <= 4'b0111;
+                if (digit == 10'b0000000001)
+                begin
+                    seg <= 8'b01000000;
+                end
+                if (digit == 10'b0000000010)
+                begin
+                    seg <= 8'b01000000;
+                end                
+                if (digit == 10'b0000000100)
+                begin
+                    seg <= 8'b01000000;
+                end      
+                if (digit == 10'b0000001000)
+                begin
+                    seg <= 8'b01000000;
+                end      
+                if (digit == 10'b0000010000)
+                begin
+                    seg <= 8'b01000000;
+                end      
+                if (digit == 10'b0000100000)
+                begin
+                    seg <= 8'b01000000;
+                end                      
+                if (digit == 10'b0001000000)
+                begin
+                    seg <= 8'b01000000;
+                end      
+                if (digit == 10'b0010000000)
+                begin
+                    seg <= 8'b01000000;
+                end      
+                if (digit == 10'b0100000000)
+                begin
+                    seg <= 8'b01000000;
+                end                      
+                if (digit == 10'b1000000000)
+                begin
+                    seg <= 8'b01001111;
+                end      
+
+                end
+            end
+        2'b01:
+            begin
+            if (validNum == 1)
+                begin
+                    an <= 4'b1011;
+                    if (digit == 10'b0000000001)
+                    begin
+                    //seg should be 1
+                        seg <= 8'b11001111;
+                    end
+
+                    if (digit == 10'b0000000010)
+                    begin
+                    //seg should be 2
+                        seg <= 8'b10100100;
+                    end                
+                    if (digit == 10'b0000000100)
+                    begin
+                    //seg should be 3
+                        seg <= 8'b10110000;
+                    end      
+                    if (digit == 10'b0000001000)
+                    begin
+                    //seg should be 4
+                        seg <= 8'b10011001;
+                    end      
+                    if (digit == 10'b0000010000)
+                    begin
+                    //seg should be 5
+                        seg <= 8'b10010010;
+                    end      
+                    if (digit == 10'b0000100000)
+                    begin //seg is 6 when digit is 5
+                        seg <= 8'b10000010;
+                    end  
+                    if (digit == 10'b0001000000)
+                    begin //seg is 7 when digit is 6
+                        seg <= 8'b11111000;
+                    end      
+                    if (digit == 10'b0010000000)
+                    begin //seg is 8 when digit is 7
+                        seg <= 8'b10000000;
+                    end      
+                    if (digit == 10'b0100000000)
+                    begin //seg is 9 when digit is 8
+                        seg <= 8'b10010000;
+                    end                      
+                    if (digit == 10'b1000000000)
+                    begin
+                        seg <= 8'b11000000;
+                    end  
+                end
+                
+            end
+        2'b10:
+            begin
+             case(state_val)
+                 0:
+                 begin
+                     seg <= 8'b11000000;
+                     an <= 4'b1110;
+                     if (sw[15] == 1'b1 && validNum == 1) begin
+                        led <= 16'b1000000000000000;
+                        end
+                     else begin
+                        led <= 16'b0000000000000000;
+                        end
+                 end
+                 1:
+                 begin
+                     seg <= 8'b11111001;
+                     an <= 4'b1110;
+                     if (sw[15] == 1'b1 && validNum == 1)
+                        led <= 16'b1000000000000001;
+                     else
+                        led <= 16'b0000000000000001;
+                 end
+                 2:
+                 begin
+                     seg <= 8'b10100100;
+                     an <= 4'b1110;
+                     if (sw[15] == 1'b1 && validNum == 1)
+                        led <= 16'b1000000000000011;
+                     else
+                        led <= 16'b0000000000000011;
+                     
+                 end
+                 3:
+                 begin
+                     seg <= 8'b10110000;
+                     an <= 4'b1110;
+                     if (sw[15] == 1'b1 && validNum == 1) 
+                        led <= 16'b1000000000000111;
+                     else
+                        led <= 16'b0000000000000111;
+                 end
+                 4:
+                 begin
+                     seg <= 8'b10011001;
+                     an <= 4'b1110;
+                     if (sw[15] == 1'b1 && validNum == 1)
+                        led <= 16'b1000000000001111;
+                     else
+                        led <= 16'b0000000000001111;
+                 end
+                 5:
+                 begin
+                     seg <= 8'b10010010;
+                     an <= 4'b1110;
+                     if (sw[15] == 1'b1 && validNum == 1)
+                        led <= 16'b1000000000011111;
+                     else
+                        led <= 16'b0000000000011111;
+                 end
+                 6:
+                 begin
+                     seg <= 8'b10000011;
+                     an <= 4'b1110;
+                     if (sw[15] == 1'b1 && validNum == 1)
+                        led <= 16'b1000000000111111;
+                     else
+                        led <= 16'b0000000000111111;
+                 end
+                 7:
+                 begin
+                     seg <= 8'b11111000;
+                     an <= 4'b1110;
+                     if (sw[15] == 1'b1 && validNum == 1)
+                        led <= 16'b1000000001111111;
+                     else
+                        led <= 16'b0000000001111111;
+                 end
+                 8:
+                 begin
+                     seg <= 8'b10000000;
+                     an <= 4'b1110;
+                     if (sw[15] == 1'b1 && validNum == 1)
+                        led <= 16'b1000000011111111;
+                     else
+                        led <= 16'b0000000011111111;
+                 end
+                 9:
+                 begin
+                     seg <= 8'b10011000;
+                     an <= 4'b1110;
+                     if (sw[15] == 1'b1 && validNum == 1)
+                        led <= 16'b1000000111111111;
+                     else
+                        led <= 16'b0000000111111111;
+                 end
+                 default:
+                 begin
+                     an <= 4'b1110;
+                     if (sw[15] == 1'b1 && validNum == 1)
+                        led <= 16'b1000000111111111;
+                     else
+                        led <= 16'b0000000111111111;
+                 end
+             endcase   
+         end
+     endcase
+  end
      
      
      // >>>> beep start
@@ -698,7 +829,7 @@ module Top_Student (
              if (~oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && ~oledSeg[4] && ~oledSeg[5] && oledSeg[6]) begin // 0     
                 lastDigit = digit;               
                 digit = 10'b0000000001;
-                validNum = 0;
+                validNum = 1;
                 
              end else
              if (oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && oledSeg[3] && oledSeg[4] && oledSeg[5] && oledSeg[6]) begin // 1      
@@ -723,12 +854,12 @@ module Top_Student (
              end else 
              if (~oledSeg[0] && oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && oledSeg[4] && ~oledSeg[5] && ~oledSeg[6]) begin // 5
              lastDigit = digit;        
-                digit = 10'b000010000;
+                digit = 10'b0000100000;
                 validNum = 1;
              end else
              if (~oledSeg[0] && oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && ~oledSeg[4] && ~oledSeg[5] && ~oledSeg[6]) begin // 6
              lastDigit = digit;        
-                digit = 10'b000100000;
+                digit = 10'b0001000000;
                 validNum = 1;
              end else
              if (~oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && oledSeg[3] && oledSeg[4] && oledSeg[5] && oledSeg[6]) begin // 7
