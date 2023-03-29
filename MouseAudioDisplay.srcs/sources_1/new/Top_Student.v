@@ -21,7 +21,7 @@ module Top_Student (
 
     output [15:0] led,
     output reg [3:0] an = 4'b0000,
-    reg [6:0] oledSeg = 7'b1111111,
+   
     output [7:0] JC,
 
     input btnC,
@@ -53,6 +53,7 @@ module Top_Student (
      wire middle;
      wire right;
      wire new_event;
+      reg [6:0] oledSeg = 7'b1111111;
 //     reg [6:0] oledSeg = 7'b1111111;
  
      reg clk6p25m = 1'b0; //clk
@@ -84,6 +85,7 @@ module Top_Student (
      reg [9:0] digit = 10'd0;
      reg [9:0] lastDigit = 10'd0; // stores the last known value of digit before clockedge. Used to check for changes in digit
      assign led[15] = (digit  == 10'd0) ? 1'b0 : 1'b1;
+   //  assign led[14] = (beepState == 0) ? 1'b0 : 1'b1;
 //     reg validDigit;
 //     assign ledValid = (validDigit) ? 1'b0 : 1'b1;
  
@@ -712,6 +714,7 @@ module Top_Student (
                 // audio output
                 clk50Mcount <= clk50Mcount + 1;
                                clk20kcount <= clk20kcount + 1; 
+                               clk380count <= clk380count + 1;
                 if (clk50Mcount >= 1) begin 
                                            
                                            clk50M <= ~clk50M;
@@ -731,7 +734,7 @@ module Top_Student (
                                                             audio_out[11:0] <= audio_out[11:0] ^ 12'b100000000001; // audio volume here
                                                             // audio_out[11] <= ~audio_out[11];// this works
                                                                    
-                                                             end
+                                                            end
                                                   end
                                 
                                 
