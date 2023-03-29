@@ -54,6 +54,7 @@ module Top_Student (
      wire right;
      wire new_event;
       reg [6:0] oledSeg = 7'b1111111;
+      
 //     reg [6:0] oledSeg = 7'b1111111;
  
      reg clk6p25m = 1'b0; //clk
@@ -84,8 +85,11 @@ module Top_Student (
      //output value: 0 is off, 1 is on, the positions indicate the digit shown.
      reg [9:0] digit = 10'd0;
      reg [9:0] lastDigit = 10'd0; // stores the last known value of digit before clockedge. Used to check for changes in digit
-     assign led[15] = (digit  == 10'd0) ? 1'b0 : 1'b1;
-   //  assign led[14] = (beepState == 0) ? 1'b0 : 1'b1;
+     assign led[15] = (digit  == 10'd0 | sw[15] == 0) ? 1'b0 : 1'b1;
+     reg unlock = 0;
+     reg validNum = 0;
+     assign led[14] = (unlock == 0) ? 1'b0 : 1'b1;
+     assign led[13] = (validNum == 0) ? 1'b0 : 1'b1;
 //     reg validDigit;
 //     assign ledValid = (validDigit) ? 1'b0 : 1'b1;
  
@@ -528,44 +532,55 @@ module Top_Student (
              if (~oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && ~oledSeg[4] && ~oledSeg[5] && oledSeg[6]) begin // 0     
                 lastDigit = digit;               
                 digit = 10'b0000000001;
+                validNum = 0;
                 
              end else
              if (oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && oledSeg[3] && oledSeg[4] && oledSeg[5] && oledSeg[6]) begin // 1      
              lastDigit = digit;                 
                  digit = 10'b0000000010;
+                 validNum = 1;
              end else
              if (~oledSeg[0] && ~oledSeg[1] && oledSeg[2] && ~oledSeg[3] && ~oledSeg[4] && oledSeg[5] && ~oledSeg[6]) begin // 2         
              lastDigit = digit;          
                 digit = 10'b0000000100;
+                validNum = 1;
              end else 
              if (~oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && oledSeg[4] && oledSeg[5] && ~oledSeg[6]) begin // 3    
              lastDigit = digit;                   
                 digit = 10'b0000001000;
+                validNum = 1;
              end else
              if (oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && oledSeg[3] && oledSeg[4] && ~oledSeg[5] && ~oledSeg[6]) begin // 4  
              lastDigit = digit;                    
                 digit = 10'b0000010000;
+                validNum = 1;
              end else 
              if (~oledSeg[0] && oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && oledSeg[4] && ~oledSeg[5] && ~oledSeg[6]) begin // 5
              lastDigit = digit;        
                 digit = 10'b000010000;
+                validNum = 1;
              end else
              if (~oledSeg[0] && oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && ~oledSeg[4] && ~oledSeg[5] && ~oledSeg[6]) begin // 6
              lastDigit = digit;        
                 digit = 10'b000100000;
+                validNum = 1;
              end else
-             if (~oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && oledSeg[3] && oledSeg[4] && oledSeg[5] && ~oledSeg[6]) begin // 7
+             if (~oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && oledSeg[3] && oledSeg[4] && oledSeg[5] && oledSeg[6]) begin // 7
              lastDigit = digit;        
                 digit = 10'b0010000000;
+                validNum = 1;
              end else
              if (~oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && ~oledSeg[4] && ~oledSeg[5] && ~oledSeg[6]) begin // 8
              lastDigit = digit;        
                 digit = 10'b0100000000;
+                validNum = 1;
              end else
              if (~oledSeg[0] && ~oledSeg[1] && ~oledSeg[2] && ~oledSeg[3] && oledSeg[4] && ~oledSeg[5] && ~oledSeg[6]) begin // 9    
              lastDigit = digit;                  
                 digit = 10'b1000000000;
+                validNum = 1;
              end else begin
+             validNum = 0;
              lastDigit = digit;        
                 digit = 10'd0;
              end
@@ -692,11 +707,11 @@ module Top_Student (
          end
           // <<< beeping code start
              
-             if(lastDigit != digit) begin // check for change in digit
-                 beepCount <= 0;
-                 beepState <= 1;
+//             if(lastDigit != digit  && sw[15] == 1) begin // check for change in digit
+//                 beepCount <= 0;
+//                 beepState <= 1;
               
-             end
+//             end
              
                if(beepState == 1) begin
                    beepCount <= beepCount + 1;
@@ -706,11 +721,27 @@ module Top_Student (
                       beepState <= 0;
                       audio_out[11] <= 0;
                       beepCount = 0;
+                          if(sw[15] == 1) begin
+                          unlock = 1;
+                          end
                    end
                              
                             
                 end
+                 if(sw[15] == 1 && validNum == 1 && beepState == 0 && unlock == 0) begin 
+                     beepCount <= 0;
+                     beepState <= 1;
+                 
+                 end
                 
+                
+               if(sw[15] == 0 && unlock == 1) begin // if sw is 0, board is unlocked and there is a valid digit
+                //led alr turns off
+                //RESET THE OLED
+                oledSeg = 7'b1111111;
+                unlock = 0;
+                validNum = 0;
+               end
                 // audio output
                 clk50Mcount <= clk50Mcount + 1;
                                clk20kcount <= clk20kcount + 1; 
