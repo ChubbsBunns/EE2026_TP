@@ -30,6 +30,7 @@ module Top_Student (
     input btnR,
     input btnD,
     
+    
     inout ps2_clk,
     inout ps2_data,
     
@@ -426,11 +427,96 @@ module Top_Student (
      
      // << beep end
      
+    // >>>ian start
+    reg [31:0] beepCountIan = 0;
+         reg beepStateIan = 0;
+         reg [31:0] debounceCountIan = 0;
+               reg debouncewaitIan = 0;
+               reg prevButtonStateIan =0;
+              
+               reg buttonStateIan = 0;
+               reg debouncedButtonIan = 0;
+               reg prevStableStateIan = 0; // previous debounced button state
+               
+               reg buttonCDIan = 0;
+               reg [31:0] buttonCDCountIan = 0;
+                reg [25:0] clk190count = 0; // 263158
+                          reg clk190 = 0;   
+                          reg [25:0] clk380count = 0; // 131579
+                          reg clk380 = 0;
     
+    //<< ian end
 
      always @(posedge basys_clk) begin
      
-    
+     
+     //>> ian start
+     if(sw[3] == 1) begin
+      prevButtonStateIan = buttonStateIan;
+                   buttonStateIan = btnC;
+                   
+                   if(prevButtonStateIan != buttonStateIan && buttonStateIan != debouncedButtonIan) begin // only trigger the code if there is an attempt to change buttonState
+                     debounceCountIan = 0;
+                   end else begin
+                      if(debounceCountIan <= 2439024) begin//2439024
+                        debounceCountIan <= debounceCountIan + 1;
+                      end else begin
+                        debounceCountIan <= 0;
+                        prevStableStateIan = debouncedButtonIan; // store the previous stable state of the button
+                        debouncedButtonIan = buttonStateIan;  
+                                          
+                      end
+                   end 
+                   
+                    if(debouncedButtonIan == 1) begin
+                                    beepStateIan = 1;
+                                    beepCountIan = 0;
+                                   // audio_out[11] <= 0;
+                                    debouncewaitIan <= 1;
+                                 //   100000000  
+                                 end
+                                 
+                                
+                                 
+                                 if(beepStateIan == 1) begin
+                                      beepCountIan <= beepCountIan + 1;
+                                      
+                                      
+                                      if(beepCountIan >= 100000000)begin
+                                          beepStateIan <= 0;
+                                          audio_out[11] <= 0;
+                                      end
+                                  
+                                 
+                                 end
+                                 
+                                 
+                                 clk190count <= clk190count + 1; 
+                                                clk380count <= clk380count + 1;
+                                 
+                                 if (clk190count >= 263158 ) begin 
+                                                               clk190 <= ~clk190;
+                                                               clk190count <=  0;
+                                                               
+                                                               
+                                                               if(beepStateIan == 1 && sw[0] == 1) begin
+                                                                 audio_out[11] <= ~audio_out[11];
+                                                               end
+                                                 end
+                                                 if (clk380count >= 131579 ) begin 
+                                                        clk380 <= ~clk380;
+                                                          clk380count <=  0;
+                                                                               
+                                                                               
+                                                                if(beepStateIan == 1 && sw[0] == 0) begin
+                                                             audio_out[11:0] <= audio_out[11:0] ^ 12'b100000000001;
+                                                             // audio_out[11] <= ~audio_out[11];// this works
+                                                                    
+                                                              end
+                                                   end
+     end
+     //<< ian end
+     else begin // IF NO ONE ELSE'S TASK SWITCHES ARE ON: DEFAULT BEHAVIOUR
  
          if (COUNT == 4'b1111) begin
              COUNT <= 0;
@@ -1050,19 +1136,8 @@ module Top_Student (
                 validNum = 0;
                end
                 // audio output
-                clk50Mcount <= clk50Mcount + 1;
-                               clk20kcount <= clk20kcount + 1; 
-                               clk380count <= clk380count + 1;
-                if (clk50Mcount >= 1) begin 
-                                           
-                                           clk50M <= ~clk50M;
-                                           clk50Mcount <=  0;
-                                end 
-                                
-                                if (clk20kcount >= 2500) begin 
-                                             clk20k <= ~clk20k;
-                                             clk20kcount <=  0;
-                                end 
+              
+                                 clk380count <= clk380count + 1;
                  if (clk380count >= 131579 ) begin  // the clock that controls the audio frequency 
                                                        clk380 <= ~clk380;
                                                          clk380count <=  0;
@@ -1078,7 +1153,22 @@ module Top_Student (
                                 
                 
                 // << beeping code end
-     
+        end
+        // >> audio output module support code start
+          clk50Mcount <= clk50Mcount + 1;
+                                     clk20kcount <= clk20kcount + 1; 
+                                    
+                      if (clk50Mcount >= 1) begin 
+                                                 
+                                                 clk50M <= ~clk50M;
+                                                 clk50Mcount <=  0;
+                                      end 
+                                      
+                                      if (clk20kcount >= 2500) begin 
+                                                   clk20k <= ~clk20k;
+                                                   clk20kcount <=  0;
+                                      end 
+                                      // << audio output module support code end
      end
       Audio_Output audio_output (
                 .CLK(clk50M), // -- System Clock (50MHz)  
