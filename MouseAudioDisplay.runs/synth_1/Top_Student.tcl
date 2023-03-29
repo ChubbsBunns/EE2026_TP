@@ -17,26 +17,29 @@ proc create_report { reportName command } {
     send_msg_id runtcl-5 warning "$msg"
   }
 }
-set_param general.maxThreads 8
 set_param xicom.use_bs_reader 1
 create_project -in_memory -part xc7a35tcpg236-1
 
 set_param project.singleFileAddWarning.threshold 0
 set_param project.compositeFile.enableAutoGeneration 0
 set_param synth.vivado.isSynthRun true
-set_property webtalk.parent_dir C:/Users/Work/Documents/NUS/EE2026/EE2026_TP/MouseAudioDisplay.cache/wt [current_project]
-set_property parent.project_path C:/Users/Work/Documents/NUS/EE2026/EE2026_TP/MouseAudioDisplay.xpr [current_project]
+set_property webtalk.parent_dir {C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/actual project please ffs/EE2026_TP/MouseAudioDisplay.cache/wt} [current_project]
+set_property parent.project_path {C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/actual project please ffs/EE2026_TP/MouseAudioDisplay.xpr} [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
-set_property ip_output_repo c:/Users/Work/Documents/NUS/EE2026/EE2026_TP/MouseAudioDisplay.cache/ip [current_project]
+set_property ip_output_repo {c:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/actual project please ffs/EE2026_TP/MouseAudioDisplay.cache/ip} [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 read_verilog -library xil_defaultlib {
-  C:/Users/Work/Documents/NUS/EE2026/EE2026_TP/MouseAudioDisplay.srcs/sources_1/imports/Desktop/Oled_Display.v
-  C:/Users/Work/Documents/NUS/EE2026/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/Top_Student.v
+  {C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/actual project please ffs/EE2026_TP/MouseAudioDisplay.srcs/sources_1/imports/Desktop/Audio_Input.v}
+  {C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/actual project please ffs/EE2026_TP/MouseAudioDisplay.srcs/sources_1/imports/Desktop/Oled_Display.v}
+  {C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/actual project please ffs/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/clk100MHz.v}
+  {C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/actual project please ffs/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/clk20k.v}
+  {C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/actual project please ffs/EE2026_TP/MouseAudioDisplay.srcs/sources_1/new/Top_Student.v}
 }
 read_vhdl -library xil_defaultlib {
-  C:/Users/Work/Documents/NUS/EE2026/EE2026_TP/MouseAudioDisplay.srcs/sources_1/imports/Desktop/Mouse_Control.vhd
-  C:/Users/Work/Documents/NUS/EE2026/EE2026_TP/MouseAudioDisplay.srcs/sources_1/imports/Desktop/Ps2Interface.vhd
+  {C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/actual project please ffs/EE2026_TP/MouseAudioDisplay.srcs/sources_1/imports/Desktop/Audio_Output.vhd}
+  {C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/actual project please ffs/EE2026_TP/MouseAudioDisplay.srcs/sources_1/imports/Desktop/Mouse_Control.vhd}
+  {C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/actual project please ffs/EE2026_TP/MouseAudioDisplay.srcs/sources_1/imports/Desktop/Ps2Interface.vhd}
 }
 # Mark all dcp files as not used in implementation to prevent them from being
 # stitched into the results of this synthesis run. Any black boxes in the
@@ -46,8 +49,8 @@ read_vhdl -library xil_defaultlib {
 foreach dcp [get_files -quiet -all -filter file_type=="Design\ Checkpoint"] {
   set_property used_in_implementation false $dcp
 }
-read_xdc C:/Users/Work/Documents/NUS/EE2026/EE2026_TP/MouseAudioDisplay.srcs/constrs_1/new/Basys3_Master.xdc
-set_property used_in_implementation false [get_files C:/Users/Work/Documents/NUS/EE2026/EE2026_TP/MouseAudioDisplay.srcs/constrs_1/new/Basys3_Master.xdc]
+read_xdc {{C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/actual project please ffs/EE2026_TP/MouseAudioDisplay.srcs/constrs_1/new/Basys3_Master.xdc}}
+set_property used_in_implementation false [get_files {{C:/Users/trosk/OneDrive/Desktop/Y2S2/EE2026/actual project please ffs/EE2026_TP/MouseAudioDisplay.srcs/constrs_1/new/Basys3_Master.xdc}}]
 
 set_param ips.enableIPCacheLiteLoad 0
 close [open __synthesis_is_running__ w]

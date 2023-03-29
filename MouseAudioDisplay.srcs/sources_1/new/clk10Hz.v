@@ -20,14 +20,12 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module clk10Hz(input basys_clock,output reg my_clk = 0);
-    //10hz clock
-    reg [31:0] count = 0;
-    
+module clk10Hz(input basys_clock, output reg my_clk = 0);
+    reg[31:0] count = 0;
     always @ (posedge basys_clock)
-        begin
-            count <= (count == 4999999) ? 0 : count + 1;
-            my_clk <= (count == 0) ? ~my_clk : my_clk;
-        end
+    begin 
+        count <= (count == 4999999) ? 0 : count + 1;
+        my_clk <= (count == 0) ? ~my_clk : my_clk;
+    end
     
 endmodule

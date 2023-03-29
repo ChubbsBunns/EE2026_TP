@@ -19,7 +19,7 @@ module Top_Student (
     output J_MIC3_Pin4,    
     output [3:0] JA, // 
 
-    output [15:0] led,
+    output reg [15:0] led,
     output reg [3:0] an = 4'b0000,
    
     output [7:0] JC,
@@ -31,9 +31,65 @@ module Top_Student (
     input btnD,
     
     inout ps2_clk,
-    inout ps2_data
+    inout ps2_data,
+    
+    output reg [7:0] seg = 8'b11111111
  );
  
+ //declaring variables for Audio Input task)
+     wire clk100Mhz;
+     wire clk20khz;
+     reg [11:0]mic_in = 12'b000000000000;
+     wire [11:0]mic_out;
+     clk20k dut1(basys_clk, clk20khz);
+     clk100MHz dut2(basys_clk, clk100Mhz);
+     
+ //This count variable is used for the Audio Volume Indicator Task
+     reg [31:0] count_AVI = 0;
+     reg [11:0] curr_mic_val = 0;
+     reg [11:0] peak_val = 0;
+     reg [8:0] state_val = 0;
+     
+ 
+     Audio_Input audioInput(basys_clk, clk20khz, J_MIC3_Pin3, J_MIC3_Pin1, J_MIC3_Pin4, mic_out); 
+     
+     
+     always @ (posedge clk20khz)
+     begin
+         count_AVI <= count_AVI + 1;
+         curr_mic_val <= mic_out;
+         if (curr_mic_val > peak_val)
+             peak_val <= curr_mic_val;
+         if (count_AVI == 2000)
+         begin
+             if (peak_val < 2200)
+                 state_val <= 0;
+             else if (peak_val >= 2200 && peak_val < 2400)
+                 state_val <= 1;
+             else if (peak_val >= 2400 && peak_val < 2600)
+                 state_val <= 2;
+             else if (peak_val >= 2600 && peak_val < 2800)
+                 state_val <= 3;
+             else if (peak_val >= 2800 && peak_val < 3000)
+                 state_val <= 4;                
+             else if (peak_val >= 3000 && peak_val < 3200)
+                 state_val <= 5;
+             else if (peak_val >= 3200 && peak_val < 3400)
+                 state_val <= 6;
+             else if (peak_val >= 3400 && peak_val < 3600)
+                 state_val <= 7;
+             else if (peak_val >= 3600 && peak_val < 3800)
+                 state_val <= 8;
+             else
+                 state_val <= 9;
+             count_AVI <= 0;
+             peak_val <= 0;
+         end
+     end
+     
+
+     
+    
      wire zr_task_on;
      assign zr_task_on = sw[0];
         
@@ -84,7 +140,7 @@ module Top_Student (
      //output value: 0 is off, 1 is on, the positions indicate the digit shown.
      reg [9:0] digit = 10'd0;
      reg [9:0] lastDigit = 10'd0; // stores the last known value of digit before clockedge. Used to check for changes in digit
-     assign led[15] = (digit  == 10'd0) ? 1'b0 : 1'b1;
+//     assign led[15] = (digit  == 10'd0) ? 1'b0 : 1'b1;
    //  assign led[14] = (beepState == 0) ? 1'b0 : 1'b1;
 //     reg validDigit;
 //     assign ledValid = (validDigit) ? 1'b0 : 1'b1;
@@ -95,7 +151,117 @@ module Top_Student (
      Oled_Display func (clk6p25m, 0, frame_begin, sending_pixels, sample_pixel, pixel_index, oled_data, JC[0],
      JC[1], JC[3], JC[4], JC[5], JC[6], JC[7]);
      
+     always @ (posedge clk100Mhz)begin
+//     assign led[15] = (digit  == 10'd0) ? 1'b0 : 1'b1;
+     if (sw[15] == 1'b1)
+        led[15] <= 1'b0;
+     else
+        led[15] <= 1'b1;
      
+     an <= 4'b1111;
+     seg <= 8'b11111111;
+     case(state_val)
+         0:
+         begin
+             seg <= 8'b11000000;
+             an <= 4'b1110;
+             if (sw[15] == 1'b1)
+                led <= 16'b0000000000000000;
+             else
+                led <= 16'b1000000000000000;
+         end
+         1:
+         begin
+             seg <= 8'b11111001;
+             an <= 4'b1110;
+             if (sw[15] == 1'b1)
+                led <= 16'b0000000000000001;
+             else
+                led <= 16'b1000000000000001;
+         end
+         2:
+         begin
+             seg <= 8'b10100100;
+             an <= 4'b1110;
+             if (sw[15] == 1'b1)
+                led <= 16'b0000000000000011;
+             else
+                led <= 16'b1000000000000011;
+             
+         end
+         3:
+         begin
+             seg <= 8'b10110000;
+             an <= 4'b1110;
+             if (sw[15] == 1'b1)
+                led <= 16'b0000000000000111;
+             else
+                led <= 16'b1000000000000111;
+         end
+         4:
+         begin
+             seg <= 8'b10011001;
+             an <= 4'b1110;
+             if (sw[15] == 1'b1)
+                led <= 16'b0000000000001111;
+             else
+                led <= 16'b1000000000001111;
+         end
+         5:
+         begin
+             seg <= 8'b10010010;
+             an <= 4'b1110;
+             if (sw[15] == 1'b1)
+                led <= 16'b0000000000011111;
+             else
+                led <= 16'b1000000000011111;
+         end
+         6:
+         begin
+             seg <= 8'b10000011;
+             an <= 4'b1110;
+             if (sw[15] == 1'b1)
+                led <= 16'b0000000000111111;
+             else
+                led <= 16'b1000000000111111;
+         end
+         7:
+         begin
+             seg <= 8'b11111000;
+             an <= 4'b1110;
+             if (sw[15] == 1'b1)
+                led <= 16'b0000000001111111;
+             else
+                led <= 16'b1000000001111111;
+         end
+         8:
+         begin
+             seg <= 8'b10000000;
+             an <= 4'b1110;
+             if (sw[15] == 1'b1)
+                led <= 16'b0000000011111111;
+             else
+                led <= 16'b1000000011111111;
+         end
+         9:
+         begin
+             seg <= 8'b10011000;
+             an <= 4'b1110;
+             if (sw[15] == 1'b1 && )
+                led <= 16'b0000000111111111;
+             else
+                led <= 16'b1000000111111111;
+         end
+         default:
+         begin
+             an <= 4'b1110;
+             if (sw[15] == 1'b1)
+                led <= 16'b0000000111111111;
+             else
+                led <= 16'b1000000111111111;
+         end
+     endcase   
+     end
      
      
      // >>>> beep start
@@ -569,8 +735,18 @@ module Top_Student (
              lastDigit = digit;        
                 digit = 10'd0;
              end
+             
+//         if (digit == 10'd0000000001 || digit == 10'd0000000010 || digit == 10'd0000000100 || digit == 10'd0000001000 || digit == 10'd0000010000 || digit == 10'd0000100000 || digit == 10'd0001000000 || digit == 10'd0010000000 || digit == 10'd0100000000 || digit == 10'd0)
+//         begin
+//            sw[15] 
+//         end
      
          end else
+         
+         //Anode stuff
+         if (digit == 10'd0000000001)
+         
+         
          if (zr_task_on == 1'b1) begin
              if (sw[11] && 
                          pixel_index % 13'd96 <= 13'd58 && 
