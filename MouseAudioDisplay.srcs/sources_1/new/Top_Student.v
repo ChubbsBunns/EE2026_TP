@@ -444,6 +444,8 @@ module Top_Student (
                           reg clk190 = 0;   
                           reg [25:0] clk380count = 0; // 131579
                           reg clk380 = 0;
+                          reg beepcd = 0;
+                          
     
     //<< ian end
 
@@ -451,70 +453,69 @@ module Top_Student (
      
      
      //>> ian start
-     if(sw[3] == 1) begin
-      prevButtonStateIan = buttonStateIan;
-                   buttonStateIan = btnC;
-                   
-                   if(prevButtonStateIan != buttonStateIan && buttonStateIan != debouncedButtonIan) begin // only trigger the code if there is an attempt to change buttonState
-                     debounceCountIan = 0;
-                   end else begin
-                      if(debounceCountIan <= 2439024) begin//2439024
-                        debounceCountIan <= debounceCountIan + 1;
-                      end else begin
-                        debounceCountIan <= 0;
-                        prevStableStateIan = debouncedButtonIan; // store the previous stable state of the button
-                        debouncedButtonIan = buttonStateIan;  
-                                          
-                      end
-                   end 
-                   
-                    if(debouncedButtonIan == 1) begin
-                                    beepStateIan = 1;
-                                    beepCountIan = 0;
-                                   // audio_out[11] <= 0;
-                                    debouncewaitIan <= 1;
-                                 //   100000000  
-                                 end
-                                 
-                                
-                                 
-                                 if(beepStateIan == 1) begin
-                                      beepCountIan <= beepCountIan + 1;
-                                      
-                                      
-                                      if(beepCountIan >= 100000000)begin
-                                          beepStateIan <= 0;
-                                          audio_out[11] <= 0;
-                                      end
-                                  
-                                 
-                                 end
-                                 
-                                 
-                                 clk190count <= clk190count + 1; 
-                                                clk380count <= clk380count + 1;
-                                 
-                                 if (clk190count >= 263158 ) begin 
-                                                               clk190 <= ~clk190;
-                                                               clk190count <=  0;
-                                                               
-                                                               
-                                                               if(beepStateIan == 1 && sw[0] == 1) begin
-                                                                 audio_out[11] <= ~audio_out[11];
-                                                               end
-                                                 end
-                                                 if (clk380count >= 131579 ) begin 
-                                                        clk380 <= ~clk380;
-                                                          clk380count <=  0;
-                                                                               
-                                                                               
-                                                                if(beepStateIan == 1 && sw[0] == 0) begin
-                                                             audio_out[11:0] <= audio_out[11:0] ^ 12'b100000000001;
-                                                             // audio_out[11] <= ~audio_out[11];// this works
-                                                                    
-                                                              end
-                                                   end
+   if(sw[3] == 1) begin
+         prevButtonStateIan = buttonStateIan;
+         buttonStateIan = btnC;
+         
+         if(prevButtonStateIan != buttonStateIan && buttonStateIan != debouncedButtonIan) begin
+             // only trigger the code if there is an attempt to change buttonState
+             debounceCountIan = 0;
+         end else begin
+             if(debounceCountIan <= 2439024) begin
+                 debounceCountIan <= debounceCountIan + 1;
+             end else begin
+                 debounceCountIan <= 0;
+                 prevStableStateIan = debouncedButtonIan; // store the previous stable state of the button
+                 debouncedButtonIan = buttonStateIan;  
+             end
+         end 
+         
+         if(debouncedButtonIan == 0)begin
+            beepcd = 0;
+         end
+         
+         if(debouncedButtonIan == 1) begin
+            if(beepcd == 0) begin
+             beepcd = 1;
+             beepStateIan = 1;
+             beepCountIan = 0;
+             // audio_out[11] <= 0;
+             debouncewaitIan <= 1;
+             //   100000000  
+             end
+         end
+         
+         if(beepStateIan == 1) begin
+             beepCountIan <= beepCountIan + 1;
+             if(beepCountIan >= 100000000) begin
+                 beepStateIan <= 0;
+                 audio_out[11] <= 0;
+             end
+         end
+         
+         clk190count <= clk190count + 1; 
+         clk380count <= clk380count + 1;
+         
+         if(clk190count >= 263158) begin 
+             clk190 <= ~clk190;
+             clk190count <= 0;
+             
+             if(beepStateIan == 1 && sw[0] == 1) begin
+                 audio_out[11] <= ~audio_out[11];
+             end
+         end
+         
+         if(clk380count >= 131579) begin 
+             clk380 <= ~clk380;
+             clk380count <= 0;
+             
+             if(beepStateIan == 1 && sw[0] == 0) begin
+                 audio_out[11:0] <= audio_out[11:0] ^ 12'b100000000001;
+                 // audio_out[11] <= ~audio_out[11];// this works
+             end
+         end
      end
+
      //<< ian end
      else begin // IF NO ONE ELSE'S TASK SWITCHES ARE ON: DEFAULT BEHAVIOUR
  
